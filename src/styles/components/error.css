@@ -1,0 +1,115 @@
+/* =========================================
+   404 Page - The Flipped World
+   ========================================= */
+
+/* Der Fullscreen-Perspektiven-Container */
+.error-scene {
+    width: 100vw;
+    height: 100vh;
+    perspective: 2500px; /* Gibt dem 3D-Raum Tiefe */
+    overflow: hidden;
+    cursor: none; /* Custom Cursor dot */
+}
+
+/* Der innere Wrapper, der die gesamte Welt dreht */
+.error-world {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Magie: Bei Hover auf das 404-Element dreht sich die gesamte WELT */
+.error-scene:hover .error-world {
+    transform: rotateY(180deg);
+}
+
+/* Vorder- und Rückseite der Welt */
+.error-front, .error-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10vw;
+}
+
+/* --- Vorderseite --- */
+.error-front {
+    background: var(--color-bg);
+}
+
+.giant-404 {
+    font-size: clamp(8rem, 25vw, 20rem); /* Riesig und responsiv */
+    font-weight: 800;
+    letter-spacing: -10px;
+    line-height: 1;
+    transition: color 0.3s var(--transition-main);
+}
+
+/* Ein kleiner Glitch-Effekt beim Hover (vor dem Drehen) */
+.giant-404::before {
+    content: '404';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    color: var(--color-accent);
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all 0.2s var(--transition-main);
+}
+
+.error-scene:hover .giant-404::before { opacity: 0.1; }
+
+/* --- Rückseite --- */
+.error-back {
+    background: #000; /* Rückseite der Welt ist dunkel */
+    color: #fff;
+    transform: rotateY(180deg); /* Ist initial umgedreht */
+    justify-content: center;
+}
+
+.error-back h3 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 700; }
+.error-back p { color: #ccc; font-size: 1.2rem; max-width: 600px; margin-bottom: 40px; }
+
+/* Der massive Beam-Me-Home Button */
+.btn-beam {
+    display: inline-block;
+    padding: 20px 40px;
+    background: var(--color-accent); /* Roter Akzent */
+    color: #fff;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-beam:hover {
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.3);
+}
+
+/* Responsive Fallback: Auf Handys lieber keine Fullscreen-Drehung */
+@media (max-width: 900px) {
+    .error-scene { height: auto; perspective: none; cursor: pointer; }
+    .error-world { transform: none !important; display: flex; flex-direction: column; }
+    .error-front, .error-back { position: relative; height: 50vh; transform: none !important; backface-visibility: visible; padding: 10vh 5vw; }
+    .error-back { background: var(--color-card-bg); color: var(--color-text); border-top: 1px solid var(--glass-border); }
+}
+
+@media (max-width: 768px) {
+    .giant-404 { letter-spacing: -5px; }
+    .error-front, .error-back { padding: 8vh 5vw; min-height: 50vh; height: auto; }
+    .error-back h3 { font-size: 1.8rem; }
+    .error-back p { font-size: 1rem; }
+    .btn-beam { padding: 16px 30px; font-size: 1rem; }
+}

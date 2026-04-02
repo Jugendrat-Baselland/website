@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jugendrat Baselland</title>
+    
+    <link rel="stylesheet" href="src/styles/base.css">
+    <link rel="stylesheet" href="src/styles/layout.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+
+    <script src="src/scripts/utils/theme.js"></script>
+    <script src="src/scripts/utils/loader.js"></script>
+</head>
+<body>
+
+    <div id="cursor-dot"></div>
+
+    <div id="loader">
+        <div class="loader-logo">loading...</div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <a href="index.html"><Jugendrat-bl class="ch">Jugendrat Baselland</Jugendrat-bl></a>
+        </div>
+        
+        <div class="nav-container">
+            <nav>
+                <ul>
+                    <li><a href="src/pages/ueber-uns.html">Über uns</a></li>
+                    <li><a href="src/pages/projekte.html">Projekte</a></li>
+                    <li><a href="src/pages/events.html">Events</a></li>
+                    <li><a href="src/pages/team.html">Team</a></li>
+                    <li><a href="src/pages/kontakt.html">Kontakt</a></li>
+                </ul>
+            </nav>
+            <button id="theme-toggle">⚙️</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero reveal" style="height: 70vh; justify-content: center; text-align: center;">
+            <h1 style="font-size: clamp(3rem, 8vw, 6rem); letter-spacing: -2px;">Deine Stimme.<br>Deine Zukunft.</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin: 20px auto 40px;">
+                Wir sind der Jugendrat. Wir setzen uns für deine Ideen ein und machen unsere Gemeinde zu einem besseren Ort für junge Menschen.
+            </p>
+            <a href="src/pages/ueber-uns.html" class="btn-beam" style="text-decoration: none;">Lerne uns kennen</a>
+        </section>
+
+        <section class="reveal">
+            <h2 class="section-title">Aktuelle Highlights</h2>
+            
+            <div id="bento-grid-container" class="bento-grid"></div>
+            
+        </section>
+    </main>
+
+   <footer>
+        <div class="footer-content">
+            <p>Copyright © 2026 Jugendrat Baselland</p>
+            <div class="footer-links">
+                <a href="src/pages/impressum.html">Impressum</a>
+                <a href="src/pages/disclaimer.html">Disclaimer</a>
+                <a href="src/pages/kontakt.html">Kontakt</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="src/scripts/services/data.js" defer></script>
+    <script src="src/scripts/app.js" defer></script>
+</body>
+</html>

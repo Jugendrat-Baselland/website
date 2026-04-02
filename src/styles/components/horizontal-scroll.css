@@ -1,0 +1,75 @@
+/* =========================================
+   Horizontal Scroll Section (Projekte)
+   ========================================= */
+.horizontal-scroll-wrapper {
+    position: relative;
+    height: 400vh; /* Erzeugt den Platz zum Scrollen (4 Bildschirmlängen) */
+}
+
+.horizontal-scroll-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.horizontal-scroll-track {
+    display: flex;
+    gap: 5vw;
+    padding: 0 5vw;
+    width: max-content;
+    will-change: transform; /* Hardware-Beschleunigung für absolute Flüssigkeit */
+}
+
+.hz-item {
+    width: 60vw;
+    height: 70vh;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    cursor: none; /* Custom Cursor aktivieren */
+}
+
+:root.dark-mode .hz-item { box-shadow: 0 20px 50px rgba(255,255,255,0.05); }
+
+.hz-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hz-item:hover img { transform: scale(1.05); }
+
+/* Schwebende Info-Box im Apple-Glas-Design */
+.hz-info {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    max-width: 80%;
+    transition: var(--transition-fast);
+}
+
+.hz-info h3 { font-size: 2rem; margin-bottom: 10px; font-weight: 700; letter-spacing: -1px; }
+.hz-info p { color: var(--color-gray); }
+
+/* Responsive Fallback: Auf dem Handy normal untereinander */
+@media (max-width: 900px) {
+    .horizontal-scroll-wrapper { height: auto; padding: 50px 0; }
+    .horizontal-scroll-sticky { position: relative; height: auto; overflow: visible; }
+    .horizontal-scroll-track { flex-direction: column; width: 100%; padding: 0 5vw; gap: 30px; }
+    .hz-item { width: 100%; height: 50vh; }
+    .hz-info { bottom: 20px; left: 20px; right: 20px; max-width: none; padding: 20px; }
+    .hz-info h3 { font-size: 1.5rem; }
+}

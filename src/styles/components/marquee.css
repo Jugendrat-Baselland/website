@@ -1,0 +1,38 @@
+/* =========================================
+   Über Uns - Artistic & Interactive
+   ========================================= */
+
+/* Endlos durchlaufender Text (Marquee) */
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 20px 0;
+    position: relative;
+    margin-bottom: -80px; /* Zieht das nachfolgende Bild in den Text */
+    z-index: 0;
+}
+
+.marquee-text {
+    display: inline-block;
+    font-size: clamp(4rem, 10vw, 10rem);
+    font-weight: 800;
+    color: transparent;
+    -webkit-text-stroke: 3px var(--color-text); /* Umriss-Schrift */
+    text-transform: uppercase;
+    animation: marquee 40s linear infinite;
+    letter-spacing: -2px;
+    opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .marquee-text { -webkit-text-stroke: 2px var(--color-text); }
+    .marquee-container { margin-bottom: -40px; }
+}
+
+:root.dark-mode .marquee-text { opacity: 0.15; }
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}

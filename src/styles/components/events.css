@@ -1,0 +1,114 @@
+/* =========================================
+   Event Portal - Interactive List
+   ========================================= */
+.events-portal {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    padding-bottom: 100px;
+}
+
+/* Linke Seite: Die Liste */
+.events-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-row {
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+    border-bottom: 1px solid var(--glass-border);
+    transition: var(--transition-main);
+    cursor: none;
+    position: relative;
+}
+
+/* Der Fokus-Effekt: Dimmt andere ab, wenn die Liste gehovert wird */
+.events-list:hover .event-row:not(:hover) {
+    opacity: 0.3;
+    filter: blur(2px);
+}
+
+.event-row:hover {
+    transform: translateX(30px); /* Slidet spielerisch nach rechts */
+}
+
+.event-date {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--color-gray);
+    width: 150px;
+    flex-shrink: 0;
+}
+
+.event-info h3 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 10px;
+}
+
+.event-info p {
+    color: var(--color-gray);
+    font-size: 1.1rem;
+}
+
+/* Mobile Bild-Platzhalter (auf Desktop versteckt) */
+.event-mobile-img {
+    display: none;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-top: 20px;
+}
+
+/* Rechte Seite: Sticky Image Reveal */
+.events-visuals {
+    width: 40vw;
+    height: 70vh;
+    position: sticky;
+    top: 15vh; /* Bleibt beim Scrollen hier stehen */
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+:root.dark-mode .events-visuals { box-shadow: 0 30px 60px rgba(255,255,255,0.05); }
+
+.event-img {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+/* Aktives Bild wird eingeblendet und herangezoomt */
+.event-img.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+/* Responsive: Auf Handys das Sticky-Layout auflösen */
+@media (max-width: 1000px) {
+    .events-portal { flex-direction: column; }
+    .events-visuals { display: none; } /* Sticky Container verstecken */
+    .event-mobile-img { display: block; } /* Mobile Bilder zeigen */
+    .event-row { flex-direction: column; align-items: flex-start; padding: 30px 0; }
+    .event-row:hover { transform: none; }
+    .events-list:hover .event-row:not(:hover) { opacity: 1; filter: none; }
+    .event-date { margin-bottom: 10px; width: auto; }
+    .events-portal { padding-bottom: 40px; }
+}
+
+@media (max-width: 768px) {
+    .event-info h3 { font-size: clamp(1.5rem, 4vw, 2.5rem); }
+    .event-mobile-img { height: 200px; }
+}

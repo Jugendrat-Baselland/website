@@ -1,0 +1,149 @@
+/* =========================================
+   Team Section - 3D Trading Cards
+   ========================================= */
+.team-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+/* Der Container, der die 3D-Perspektive definiert (zwingend nötig!) */
+.flip-card-scene {
+    aspect-ratio: 3/4; /* Kartenformat */
+    perspective: 2000px; /* Gibt dem 3D-Raum Tiefe. Kleinerer Wert = extremerer Effekt */
+    cursor: none; /* Custom Cursor dot verwenden */
+    will-change: transform;
+}
+
+/* Der innere Wrapper, der sich tatsächlich dreht */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* Apple-Bezier Kurve */
+    transform-style: preserve-3d; /* Zwingend, damit die Vorder-/Rückseite 3D wirken */
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+:root.dark-mode .flip-card-inner { box-shadow: 0 15px 40px rgba(255,255,255,0.05); }
+
+/* Die Magie: Bei Hover dreht sich der innere Wrapper */
+.flip-card-scene:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* Gemeinsame Stile für Vorder- und Rückseite */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; /* Versteckt die Rückseite des Elements */
+    backface-visibility: hidden;
+    border-radius: 24px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Vorderseite --- */
+.flip-card-front {
+    background: #000; /* Falls Bild nicht lädt */
+    color: #fff;
+    z-index: 2; /* Liegt oben auf */
+}
+
+.flip-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Sanfter Zoom-In auf der Vorderseite beim Hovern (spieleriisch) */
+.flip-card-scene:hover .flip-card-front img { transform: scale(1.05); }
+
+.flip-card-front-info {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+    text-align: left;
+}
+
+.flip-card-front-info h3 {
+    font-size: 1.8rem; font-weight: 700;
+    letter-spacing: -0.5px; margin-bottom: 5px;
+}
+
+.flip-card-front-info p {
+    color: #ccc; text-transform: uppercase;
+    letter-spacing: 1px; font-size: 0.8rem; font-weight: 600;
+}
+
+/* --- Rückseite --- */
+.flip-card-back {
+    background: var(--glass-bg); /* Apple Glas Design */
+    backdrop-filter: var(--blur-effect);
+    -webkit-backdrop-filter: var(--blur-effect);
+    color: var(--color-text);
+    transform: rotateY(180deg); /* Ist initial umgedreht */
+    z-index: 1; /* Liegt hinter der Vorderseite */
+    padding: 40px;
+    justify-content: space-between;
+    border: 1px solid var(--glass-border);
+}
+
+/* Schatten-Simulation auf der Rückseite (Wird dunkler, wenn sie weg-dreht) */
+.flip-card-back::after {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.3);
+    border-radius: 24px;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+
+.flip-card-scene:hover .flip-card-back::after { opacity: 0; }
+.flip-card-scene:not(:hover) .flip-card-back::after { opacity: 1; } /* Schatten, wenn umgedreht */
+
+/* Layout auf der Rückseite */
+.card-back-header { text-align: left; position: relative; z-index: 1; }
+.card-back-header h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.card-back-meta { color: var(--color-gray); font-size: 0.9rem; line-height: 1.5; }
+.card-back-meta strong { color: var(--color-text); font-weight: 600; }
+
+.card-back-quote {
+    font-size: 1.1rem; font-style: italic;
+    font-weight: 500; color: var(--color-text);
+    position: relative; z-index: 1; margin: 30px 0;
+}
+.card-back-quote::before { content: '"'; color: var(--color-accent); font-size: 2rem; }
+
+.card-back-action { position: relative; z-index: 1; text-align: right; }
+.card-back-action a { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--color-accent); transition: var(--transition-fast); }
+.card-back-action a:hover { text-decoration: underline; }
+
+/* Responsive: Auf Handys das 3D-Hovern ggf. deaktivieren oder stapeln */
+@media (max-width: 900px) {
+    .team-cards-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .flip-card-scene { aspect-ratio: auto; height: auto; }
+    /* Auf Handys lieber keine 3D-Drehung, sondern normal stapeln oder Klick-Event nutzen */
+    .flip-card-inner { position: relative; transform: none !important; box-shadow: none; display: flex; flex-direction: column; gap: 20px; }
+    .flip-card-front, .flip-card-back { position: relative; transform: none !important; aspect-ratio: 3/4; border-radius: 16px; backface-visibility: visible; }
+    .flip-card-back { border: 1px solid var(--glass-border); padding: 30px; }
+    .flip-card-back::after { display: none; }
+}
+
+@media (max-width: 768px) {
+    .team-cards-grid { max-width: 100%; gap: 30px; }
+    .flip-card-back { padding: 20px; }
+    .flip-card-front-info h3 { font-size: 1.4rem; }
+    .card-back-quote { font-size: 1rem; margin: 20px 0; }
+}

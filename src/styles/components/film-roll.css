@@ -1,0 +1,83 @@
+/* =========================================
+   Projekte - Abgeschlossene Projekte (Film Roll)
+   ========================================= */
+.film-roll-wrapper {
+    position: relative;
+    height: 300vh; /* Macht den Bereich extra lang, damit wir viel Scroll-Weg haben */
+    margin-top: 100px;
+    z-index: 5;
+}
+
+.film-roll-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--color-bg); /* Passt sich Dark/Light Mode an */
+}
+
+.film-roll-title {
+    position: absolute;
+    top: 15vh;
+    left: 5vw;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 800;
+    z-index: 10;
+}
+
+.film-roll-track {
+    display: flex;
+    gap: 40px;
+    padding: 0 5vw;
+    will-change: transform;
+    /* Die Breite ergibt sich automatisch aus den Karten */
+}
+
+.film-card {
+    flex: 0 0 400px; /* Feste Breite für jede Karte */
+    height: 550px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    filter: grayscale(100%); /* Startet Schwarz-Weiß (Vergangenheit) */
+    transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.film-card:hover {
+    filter: grayscale(0%); /* Wird bunt bei Hover */
+    transform: scale(1.03) rotate(2deg); /* Spielerische Neigung */
+    z-index: 2;
+}
+
+.film-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.film-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 30px 30px;
+    background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+    color: #fff;
+}
+
+.film-info h3 { font-size: 1.8rem; margin-bottom: 5px; }
+.film-info p { font-size: 1rem; color: #ccc; }
+
+/* Responsive: Auf Handys schalten wir das auf normales seitliches Wischen (Swipe) um */
+@media (max-width: 768px) {
+    .film-roll-wrapper { height: auto; margin-top: 50px; overflow: hidden; }
+    .film-roll-sticky { position: relative; height: auto; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 100px 0 40px; scroll-snap-type: x mandatory; }
+    .film-roll-title { top: 20px; }
+    .film-roll-track { transform: none !important; padding: 0 20px; }
+    .film-card { flex: 0 0 85vw; height: 450px; filter: grayscale(0%); scroll-snap-align: center; cursor: pointer; }
+    .film-info h3 { font-size: 1.4rem; }
+}
