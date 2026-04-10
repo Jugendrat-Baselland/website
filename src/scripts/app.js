@@ -2,6 +2,17 @@
    APP.JS - INTERACTIVE ENGINE (Logik)
    ========================================= */
 
+// --- HTML Escape Utility (XSS Prevention) ---
+function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     // --- Mobile / Touch Detection ---
@@ -10,7 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // --- 1. Custom Cursor ---
     const cursorDot = document.getElementById("cursor-dot");
-    const interactables = document.querySelectorAll("a, button, .card, .events-visuals, .hz-item, .form-control, .artistic-portrait, .team-member, .flip-card-scene"); // .flip-card-scene HIER ERGÄNZEN
+    const hoverSelector = "a, button, .card, .events-visuals, .hz-item, .form-control, .artistic-portrait, .team-member, .flip-card-scene";
+
+    // Re-attach cursor hover events to dynamically generated elements
+    window.updateCursorHoverElements = function() {
+        if (!cursorDot || isTouchDevice) return;
+        document.querySelectorAll(hoverSelector).forEach(function(el) {
+            if (el._cursorBound) return;
+            el._cursorBound = true;
+            el.addEventListener("mouseenter", function() { cursorDot.classList.add("hovered"); });
+            el.addEventListener("mouseleave", function() { cursorDot.classList.remove("hovered"); });
+        });
+    };
 
     if (cursorDot && !isTouchDevice) {
         window.addEventListener("mousemove", (e) => {
@@ -18,10 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cursorDot.style.top = `${e.clientY}px`;
         });
 
-        interactables.forEach(el => {
-            el.addEventListener("mouseenter", () => cursorDot.classList.add("hovered"));
-            el.addEventListener("mouseleave", () => cursorDot.classList.remove("hovered"));
-        });
+        updateCursorHoverElements();
     } else if (cursorDot) {
         // Hide cursor dot on touch devices
         cursorDot.style.display = 'none';
@@ -96,40 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 5. Interactive Contact Form Mock ---
-    const contactForm = document.getElementById('bzr-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Verhindert das Neuladen der Seite
-            
-            const btn = contactForm.querySelector('.btn-submit');
-            const originalText = btn.textContent;
-            
-            // Lade-Status
-            btn.textContent = 'Mnobv...'; 
-            btn.style.opacity = '0.7';
-            btn.style.transform = 'scale(0.98)';
-
-            // Simuliere Server-Antwortzeit (1.5 Sekunden)
-            setTimeout(() => {
-                // Erfolgs-Status (Apple Green)
-                btn.textContent = 'Qwertz Yx!'; 
-                btn.style.background = '#34c759'; 
-                btn.style.color = '#ffffff';
-                btn.style.opacity = '1';
-                btn.style.transform = 'scale(1)';
-                
-                contactForm.reset(); // Formular leeren
-
-                // Nach 3 Sekunden zurücksetzen
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.background = 'var(--color-text)';
-                    btn.style.color = 'var(--color-bg)';
-                }, 3000);
-            }, 1500);
-        });
-    }
+    // --- 5. (Removed dead code: #bzr-form handler – no HTML uses that ID) ---
 
     // --- 6. Event Portal Image Reveal Logic ---
     const eventRows = document.querySelectorAll('.event-row');
@@ -163,20 +149,26 @@ document.addEventListener("DOMContentLoaded", () => {
         
         bentoProjects.forEach((item, index) => {
             const delayClass = `delay-${(index % 3) + 1}`;
+            const safeLink = escapeHTML(item.link);
+            const safeImage = escapeHTML(item.image);
+            const safeTitle = escapeHTML(item.title);
+            const safeTag = escapeHTML(item.tag);
+            const safeDesc = escapeHTML(item.description);
             
             bentoHtml += `
-                <a href="${item.link}" class="bento-item ${delayClass}">
-                    <img src="${item.image}" alt="${item.title}" class="bento-img">
+                <a href="${safeLink}" class="bento-item ${delayClass}">
+                    <img src="${safeImage}" alt="${safeTitle}" class="bento-img">
                     <div class="bento-content">
-                        <span class="bento-tag">${item.tag}</span>
-                        <h3>${item.title}</h3>
-                        <p>${item.description}</p>
+                        <span class="bento-tag">${safeTag}</span>
+                        <h3>${safeTitle}</h3>
+                        <p>${safeDesc}</p>
                     </div>
                 </a>
             `;
         });
         
         bentoContainer.innerHTML = bentoHtml;
+        updateCursorHoverElements();
     }
 
     // --- AUTOMATISCHER KARTEN-GENERATOR ---
@@ -190,32 +182,39 @@ document.addEventListener("DOMContentLoaded", () => {
         teamMembers.forEach((member, index) => {
             // Berechnet dynamisch den Delay (1, 2, 3) für die Einblend-Animation
             const delayClass = `delay-${(index % 3) + 1}`;
+            const safeName = escapeHTML(member.name);
+            const safeImage = escapeHTML(member.image);
+            const safeRoleFront = escapeHTML(member.roleFront);
+            const safeRoleBack = escapeHTML(member.roleBack);
+            const safeAge = escapeHTML(member.age);
+            const safeQuote = escapeHTML(member.quote);
+            const safeInstagram = escapeHTML(member.instagram);
             
             htmlContent += `
                 <div class="flip-card-scene ${delayClass}">
                     <div class="flip-card-inner">
                         
                         <div class="flip-card-front">
-                            <img src="${member.image}" alt="${member.name}">
+                            <img src="${safeImage}" alt="${safeName}">
                             <div class="flip-card-front-info">
-                                <h3>${member.name}</h3>
-                                <p>${member.roleFront}</p>
+                                <h3>${safeName}</h3>
+                                <p>${safeRoleFront}</p>
                             </div>
                         </div>
 
                         <div class="flip-card-back">
                             <div class="card-back-header">
-                                <h3>${member.name}</h3>
+                                <h3>${safeName}</h3>
                                 <div class="card-back-meta">
-                                    <p><strong>Alter:</strong> ${member.age} Jahre</p>
-                                    <p><strong>Ressort:</strong> ${member.roleBack}</p>
+                                    <p><strong>Alter:</strong> ${safeAge} Jahre</p>
+                                    <p><strong>Ressort:</strong> ${safeRoleBack}</p>
                                 </div>
                             </div>
                             <div class="card-back-quote">
-                                "${member.quote}"
+                                "${safeQuote}"
                             </div>
                             <div class="card-back-action">
-                                <a href="https://instagram.com/${member.instagram}" target="_blank">@${member.instagram}</a>
+                                <a href="https://instagram.com/${safeInstagram}" target="_blank" rel="noopener noreferrer">@${safeInstagram}</a>
                             </div>
                         </div>
 
@@ -227,11 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fügt das generierte HTML in die Seite ein
         teamContainer.innerHTML = htmlContent;
         
-        // WICHTIG: Falls du den Custom Cursor (cursor-dot) verwendest, 
-        // müssen wir den neu generierten Elementen mitteilen, dass sie hoverbar sind.
-        if (typeof updateCursorHoverElements === 'function') {
-            updateCursorHoverElements(); 
-        }
+        // Cursor-Hover-Events auf die neuen Elemente anwenden
+        updateCursorHoverElements();
     }
 
     // --- HORIZONTAL FILM ROLL LOGIC (Projekte) ---
@@ -264,10 +260,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         
-        // Cursor-Hover für die neuen Film-Karten aktivieren
-        if (typeof updateCursorHoverElements === 'function') {
-            updateCursorHoverElements();
-        }
+        // Cursor-Hover für die Film-Karten aktivieren
+        updateCursorHoverElements();
     }
 
 });
@@ -315,17 +309,17 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault(); // Verhindert das Neuladen der Seite
             
             const submitBtn = contactForm.querySelector('.btn-magnetic');
-            const originalText = submitBtn.innerHTML;
+            const originalText = submitBtn.textContent;
             
             // 1. Lade-Status
-            submitBtn.innerHTML = 'Wird gesendet... ⏳';
+            submitBtn.textContent = 'Wird gesendet... ⏳';
             submitBtn.style.opacity = '0.8';
             
             // 2. Fake-Server-Delay (tut so, als würde er senden)
             setTimeout(() => {
                 // 3. Erfolgs-Status
                 submitBtn.classList.add('success');
-                submitBtn.innerHTML = 'Nachricht gesendet! 🚀';
+                submitBtn.textContent = 'Nachricht gesendet! 🚀';
                 submitBtn.style.opacity = '1';
                 
                 // Formular leeren
@@ -334,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Optional: Button nach 5 Sekunden wieder normalisieren
                 setTimeout(() => {
                     submitBtn.classList.remove('success');
-                    submitBtn.innerHTML = originalText;
+                    submitBtn.textContent = originalText;
                 }, 5000);
                 
             }, 1500); // 1.5 Sekunden "Ladezeit"
