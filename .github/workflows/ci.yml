@@ -1,0 +1,128 @@
+# CI – Kontinuierliche Integration
+#
+# Dieser Workflow läuft bei jedem Push und Pull Request.
+# Er prüft die statische Website auf HTML-Validität und Struktur.
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # -------------------------------------------------------------------------
+  # HTML-Validierung
+  # -------------------------------------------------------------------------
+  validate:
+    name: HTML Validierung
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: HTML-Dateien prüfen
+        run: |
+          echo "Prüfe ob alle HTML-Dateien vorhanden sind..."
+          files=(
+            "index.html"
+            "src/pages/ueber-uns.html"
+            "src/pages/projekte.html"
+            "src/pages/events.html"
+            "src/pages/team.html"
+            "src/pages/kontakt.html"
+            "src/pages/impressum.html"
+            "src/pages/disclaimer.html"
+            "src/pages/404.html"
+          )
+          missing=0
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Fehlend: $file"
+              missing=$((missing + 1))
+            else
+              echo "✅ Vorhanden: $file"
+            fi
+          done
+          if [ $missing -gt 0 ]; then
+            echo "::error::$missing HTML-Datei(en) fehlen!"
+            exit 1
+          fi
+
+      - name: CSS-Dateien prüfen
+        run: |
+          echo "Prüfe ob alle CSS-Dateien vorhanden sind..."
+          for file in src/styles/base.css src/styles/layout.css src/styles/components.css; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Fehlend: $file"
+              exit 1
+            else
+              echo "✅ Vorhanden: $file"
+            fi
+          done
+
+      - name: JavaScript-Dateien prüfen
+        run: |
+          echo "Prüfe ob alle JavaScript-Dateien vorhanden sind..."
+          for file in src/scripts/app.js src/scripts/services/data.js src/scripts/utils/theme.js src/scripts/utils/loader.js; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Fehlend: $file"
+              exit 1
+            else
+              echo "✅ Vorhanden: $file"
+            fi
+          done
+
+  # -------------------------------------------------------------------------
+  # Link-Prüfung
+  # -------------------------------------------------------------------------
+  links:
+    name: Links prüfen
+    runs-on: ubuntu-latest
+    needs: validate
+    permissions:
+      contents: read
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Interne Links auf Gültigkeit prüfen
+        run: |
+          echo "Prüfe interne Verlinkungen..."
+          errors=0
+
+          # Prüfe ob verlinkte Dateien aus index.html existieren
+          for link in $(grep -oP 'href="([^"#]+?\.html)"' index.html | grep -oP '"[^"]*"' | tr -d '"'); do
+            if [ ! -f "$link" ]; then
+              echo "❌ Toter Link in index.html: $link"
+              errors=$((errors + 1))
+            fi
+          done
+
+          # Prüfe Links in allen Unterseiten
+          for page in src/pages/*.html; do
+            for link in $(grep -oP 'href="([^"#:]+?\.html)"' "$page" | grep -oP '"[^"]*"' | tr -d '"'); do
+              # Relativer Pfad von src/pages/ aus auflösen
+              resolved="src/pages/$link"
+              if [ ! -f "$resolved" ] && [ ! -f "$link" ]; then
+                echo "⚠️  Möglicherweise toter Link in $page: $link"
+              fi
+            done
+          done
+
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors tote Links in index.html gefunden!"
+            exit 1
+          fi
+          echo "✅ Alle geprüften Links sind gültig"

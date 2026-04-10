@@ -1,0 +1,41 @@
+# Produktionsumgebung – Konfigurationshinweise
+# ==============================================
+# Live-Website auf GitHub Pages
+#
+# Die Website wird direkt vom main-Branch auf GitHub Pages bereitgestellt.
+# Kein Build-Prozess, keine Umgebungsvariablen, keine Secrets erforderlich.
+
+# GitHub Pages Konfiguration
+# ==============================================
+# Repository Settings → Pages:
+#   Source: GitHub Actions (cd.yml Workflow)
+#   Branch: main
+#   Ordner: / (Root)
+#
+# Die index.html im Root wird automatisch als Startseite erkannt.
+
+# URL
+# ==============================================
+# Standard GitHub Pages URL:
+#   https://jugendrat-baselland.github.io/website/
+#
+# Custom Domain (optional):
+#   1. CNAME-Datei im Root mit der Domain erstellen
+#   2. DNS bei Domain-Provider konfigurieren
+#   3. GitHub Pages Settings → Custom Domain eintragen
+#   4. "Enforce HTTPS" aktivieren
+
+# Pfad-Hinweise für Produktion
+# ==============================================
+# Alle Pfade sind relativ und funktionieren sowohl lokal als auch auf GitHub Pages.
+# HTTPS wird von GitHub Pages automatisch erzwungen.
+
+# Externe Ressourcen
+# ==============================================
+# Aktuell werden Platzhalter-Bilder von picsum.photos geladen.
+# Für Produktion sollten eigene Bilder unter src/assets/images/ abgelegt werden.
+
+# Kontaktformular
+# ==============================================
+# Das Kontaktformular benötigt einen externen Dienst (z. B. Formspree, Netlify Forms)
+# oder eine eigene Backend-Lösung für die Verarbeitung der Formulardaten.

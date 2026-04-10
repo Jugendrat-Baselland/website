@@ -1,0 +1,40 @@
+# Entwicklungsumgebung – Konfigurationshinweise
+# ================================================
+# Lokale Entwicklung der statischen Website
+#
+# Da dies eine statische Website ohne Build-Prozess ist,
+# werden keine .env-Dateien oder Umgebungsvariablen benötigt.
+# Diese Datei dokumentiert die Entwicklungsumgebung als Referenz.
+
+# Lokaler Server
+# ================================================
+# Option 1: Datei direkt im Browser öffnen
+#   open index.html  (macOS)
+#   xdg-open index.html  (Linux)
+#
+# Option 2: Python HTTP-Server
+#   python3 -m http.server 8000
+#   → http://localhost:8000
+#
+# Option 3: Node.js serve
+#   npx serve .
+#   → http://localhost:3000
+#
+# Option 4: VS Code Live Server Extension
+#   Rechtsklick auf index.html → "Open with Live Server"
+#   → http://localhost:5500 (mit Auto-Reload)
+
+# Pfad-Struktur
+# ================================================
+# Root:           index.html
+# Seiten:         src/pages/*.html
+# Styles:         src/styles/*.css
+# Scripts:        src/scripts/**/*.js
+# Bilder:         src/assets/images/
+
+# Debug-Tipps
+# ================================================
+# - Browser DevTools (F12) für CSS/JS Debugging
+# - Console-Tab für JavaScript-Fehler
+# - Network-Tab um fehlende Dateien zu finden
+# - Device-Toolbar für Responsive-Testing

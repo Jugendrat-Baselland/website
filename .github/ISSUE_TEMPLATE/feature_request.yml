@@ -1,0 +1,60 @@
+name: Feature Request
+description: Eine neue Funktion oder Verbesserung vorschlagen
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für deinen Vorschlag! Bitte beschreibe deine Idee so detailliert wie möglich.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: Welches Problem soll diese Funktion lösen? Was ist der Hintergrund?
+      placeholder: Ich bin immer frustriert, wenn... / Es wäre nützlich, wenn...
+    validations:
+      required: true
+
+  - type: textarea
+    id: loesung
+    attributes:
+      label: Gewünschte Lösung
+      description: Beschreibe die gewünschte Funktion oder Verbesserung klar und präzise.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativen
+    attributes:
+      label: Alternativen
+      description: Hast du alternative Lösungsansätze in Betracht gezogen?
+
+  - type: dropdown
+    id: prioritaet
+    attributes:
+      label: Priorität
+      description: Wie wichtig ist dieses Feature für dich?
+      options:
+        - Niedrig – Nice-to-have
+        - Mittel – Würde meinen Workflow verbessern
+        - Hoch – Blockiert mich aktuell
+    validations:
+      required: true
+
+  - type: textarea
+    id: kontext
+    attributes:
+      label: Zusätzlicher Kontext
+      description: Screenshots, Mockups, Links zu ähnlichen Projekten oder weitere Informationen.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checkliste
+      options:
+        - label: Ich habe geprüft, ob dieses Feature bereits als Issue existiert
+          required: true
+        - label: Ich bin bereit, an der Umsetzung mitzuhelfen (optional)

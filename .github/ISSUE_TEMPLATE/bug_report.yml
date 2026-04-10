@@ -1,0 +1,108 @@
+name: Bug Report
+description: Einen Fehler im Projekt melden
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Danke für das Melden dieses Fehlers! Bitte fülle das Formular so vollständig wie möglich aus.
+
+  - type: textarea
+    id: beschreibung
+    attributes:
+      label: Fehlerbeschreibung
+      description: Eine klare und präzise Beschreibung des Fehlers.
+      placeholder: Was ist passiert?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduktion
+    attributes:
+      label: Schritte zur Reproduktion
+      description: Wie kann der Fehler reproduziert werden?
+      placeholder: |
+        1. Gehe zu '...'
+        2. Klicke auf '...'
+        3. Scrolle nach unten zu '...'
+        4. Fehler erscheint
+    validations:
+      required: true
+
+  - type: textarea
+    id: erwartet
+    attributes:
+      label: Erwartetes Verhalten
+      description: Was hättest du erwartet, dass passiert?
+    validations:
+      required: true
+
+  - type: textarea
+    id: tatsaechlich
+    attributes:
+      label: Tatsächliches Verhalten
+      description: Was ist stattdessen passiert?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Logs
+      description: Falls zutreffend, füge Screenshots oder Log-Ausgaben hinzu.
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: In welchem Browser tritt das Problem auf?
+      options:
+        - Chrome
+        - Firefox
+        - Safari (Desktop)
+        - Safari (iOS)
+        - Edge
+        - Samsung Internet
+        - Anderer Browser
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Betriebssystem
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - iOS
+        - Android
+        - Andere
+
+  - type: dropdown
+    id: geraet
+    attributes:
+      label: Gerät
+      description: Auf welchem Gerätetyp tritt das Problem auf?
+      options:
+        - Desktop
+        - Tablet
+        - Smartphone
+
+  - type: textarea
+    id: kontext
+    attributes:
+      label: Zusätzlicher Kontext
+      description: Weitere relevante Informationen zum Problem.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checkliste
+      options:
+        - label: Ich habe nach bestehenden Issues gesucht und keinen Duplikat gefunden
+          required: true
+        - label: Ich habe die aktuellste Version überprüft
+          required: true

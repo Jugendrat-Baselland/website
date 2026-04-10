@@ -1,6 +1,6 @@
 # Jugendrat Baselland Website
 
-Statische Website für den Jugendrat Baselland - ohne Build-System, rein mit HTML, CSS und JavaScript.
+Statische Website für den Jugendrat Baselland, ohne Build-System, rein mit HTML, CSS und JavaScript.
 
 ## Projektstruktur
 
@@ -166,7 +166,7 @@ Diese Website ist eine **statische Website** ohne Build-Prozess:
    # Node.js (npx)
    npx http-server
    ```
-"ALternative ist Code-Space möglich"
+Alternativ kann ein GitHub Codespace verwendet werden.
 
 ### Inhalte ändern
 
@@ -205,14 +205,12 @@ window.bentoProjects = [
 ## Deployment
 
 ### GitHub Pages
-1. Repository Settings → Pages
-2. Source: `main` Branch
-3. Root-Verzeichnis: `/` (root)
-4. Die `index.html` im Root wird automatisch erkannt
+Die Website wird automatisch über GitHub Actions auf GitHub Pages deployt,
+wenn Änderungen auf den `main`-Branch gepusht werden.
 
-"Ist schon eingestellt, muss aber mit Branches erweiterung optimiert werden!"
+Der CD-Workflow (`.github/workflows/cd.yml`) übernimmt das Deployment vollautomatisch.
 
-### Hosting-Anbieter
+### Alternativ: Hosting-Anbieter
 Einfach alle Dateien hochladen:
 - `index.html` muss im Root bleiben
 - `src/` Ordner mit allen Unterordnern hochladen
@@ -250,10 +248,20 @@ Open Source - Code kann für weitere Programmierung verwendet werden.
 
 ## Kontakt
 
-Jugendrat Baselland
+**Jugendrat Baselland**
+
 Mail: **[it@jugendrat-bl.ch](mailto:it@jugendrat-bl.ch)**
-Website: [In Arbeit]
+
+Website: [jugendrat-bl.ch](https://jugendrat-bl.ch)
+
+Discord: [Jugendrat Baselland](https://discord.gg/4xXfGcHEs3)
+
+Instagram: [@jugendrat_bl](https://instagram.com/jugendrat_bl)
+
+TikTok: [@jugendrat_bl](https://tiktok.com/@jugendrat_bl)
+
+Whatsapp: [Jugendrat Baselland](https://whatsapp.com/channel/0029Vb7c1agIXnlrqLpHZU0R)
 
 ---
 
-**Half-Stack Website (nur Frontend)** - Aktuell in Entwicklung
+**Statische Website (reines Frontend)** — Jugendrat Baselland
