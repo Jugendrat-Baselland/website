@@ -18,33 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Mobile / Touch Detection ---
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     const isMobile = () => window.innerWidth <= 900;
-    
-    // --- 1. Custom Cursor ---
-    const cursorDot = document.getElementById("cursor-dot");
-    const hoverSelector = "a, button, .card, .events-visuals, .hz-item, .form-control, .artistic-portrait, .team-member, .flip-card-scene";
-
-    // Re-attach cursor hover events to dynamically generated elements
-    window.updateCursorHoverElements = function() {
-        if (!cursorDot || isTouchDevice) return;
-        document.querySelectorAll(hoverSelector).forEach(function(el) {
-            if (el._cursorBound) return;
-            el._cursorBound = true;
-            el.addEventListener("mouseenter", function() { cursorDot.classList.add("hovered"); });
-            el.addEventListener("mouseleave", function() { cursorDot.classList.remove("hovered"); });
-        });
-    };
-
-    if (cursorDot && !isTouchDevice) {
-        window.addEventListener("mousemove", (e) => {
-            cursorDot.style.left = `${e.clientX}px`;
-            cursorDot.style.top = `${e.clientY}px`;
-        });
-
-        updateCursorHoverElements();
-    } else if (cursorDot) {
-        // Hide cursor dot on touch devices
-        cursorDot.style.display = 'none';
-    }
 
     // --- 2. Apple-Style Scroll Reveal Observer ---
     const observerOptions = {
@@ -115,9 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 5. (Removed dead code: #bzr-form handler – no HTML uses that ID) ---
-
-    // --- 6. Event Portal Image Reveal Logic ---
+    // --- Event Portal Image Reveal Logic ---
     const eventRows = document.querySelectorAll('.event-row');
     const eventImages = document.querySelectorAll('.event-img');
 
@@ -312,14 +283,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const originalText = submitBtn.textContent;
             
             // 1. Lade-Status
-            submitBtn.textContent = 'Wird gesendet... ⏳';
+            submitBtn.textContent = 'Wird gesendet... ';
             submitBtn.style.opacity = '0.8';
             
             // 2. Fake-Server-Delay (tut so, als würde er senden)
             setTimeout(() => {
                 // 3. Erfolgs-Status
                 submitBtn.classList.add('success');
-                submitBtn.textContent = 'Nachricht gesendet! 🚀';
+                submitBtn.textContent = 'Nachricht erfolgreich gesendet! ';
                 submitBtn.style.opacity = '1';
                 
                 // Formular leeren

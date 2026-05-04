@@ -43,7 +43,7 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color var(--transition-main), color var(--transition-main);
-    /*cursor: none; /* Hide default cursor for custom dot */
+    cursor: auto; 
     -webkit-text-size-adjust: 100%;
 }
 
@@ -58,7 +58,7 @@ ul { list-style: none; }
 @media (hover: none) and (pointer: coarse) {
     body { cursor: auto; }
     a { cursor: pointer; }
-}
+}   
 
 /* =========================================
    Scroll Reveal Animations
