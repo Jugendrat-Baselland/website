@@ -13,10 +13,10 @@
     --glass-border: rgba(0, 0, 0, 0.05);
     --blur-effect: blur(20px);
 
-    /* Apple System Fonts */
+    /* System Fonts */
     --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
-    /* Buttery Smooth Apple Curves */
+    /* Buttery Smooth Curves */
     --transition-fast: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     --transition-main: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -43,13 +43,13 @@ body {
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     transition: background-color var(--transition-main), color var(--transition-main);
-    cursor: none; /* Hide default cursor for custom dot */
+    /*cursor: none; /* Hide default cursor for custom dot */
     -webkit-text-size-adjust: 100%;
 }
 
 img, video, svg { max-width: 100%; height: auto; }
 
-a { text-decoration: none; color: inherit; cursor: none; }
+a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
 /* =========================================

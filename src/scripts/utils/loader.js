@@ -6,6 +6,6 @@ window.addEventListener('load', () => {
         setTimeout(() => {
             loader.classList.add('hidden');
             document.documentElement.classList.remove('loading');
-        }, 1000);
+        }, 2000);
     }
 });

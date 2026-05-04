@@ -30,25 +30,11 @@ und dieses Projekt folgt der [Semantischen Versionierung](https://semver.org/lan
 
 ### Hinzugefügt
 - Statische Website mit HTML, CSS und Vanilla JavaScript
-- Startseite mit Hero-Section und dynamischem Bento-Grid
-- Über-uns-, Projekte-, Events-, Team- und Kontakt-Seiten
-- Custom Cursor mit Hover-Effekten
-- Dark/Light Mode mit LocalStorage-Persistierung
-- Scroll-Reveal Animationen (Intersection Observer)
-- Auto-Hide Header beim Scrollen
-- Apple-Style horizontale Scroll-Sektion
-- Film-Roll Effekt für Projektübersicht
-- Flip-Card Animationen für Team-Mitglieder
-- Event-Portal mit Image-Reveal
-- Magnetische Button-Effekte
-- Karussell-Navigation
-- Responsives Design mit Touch-Optimierungen
-- Page Loader Animation
-- XSS-Prevention via `escapeHTML()`-Utility
-- Modulare CSS-Architektur mit Custom Properties
-- Trennung von Daten und Logik (`data.js` / `app.js`)
-- Impressum und Disclaimer-Seiten
-- 404-Fehlerseite
+- Interaktive Kontaktseite mit Formular
+- Dynamisches Bento-Grid für Projektübersicht
+- Scroll-Reveal Animationen für Inhalte
+- Dark/Light Mode Umschalter
+
 
 ---
 

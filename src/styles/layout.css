@@ -1,10 +1,10 @@
-/* =========================================
+/* 
     LAYOUT CSS - Structural Elements
-   ========================================= */
+    */
 
-/* =========================================
+/* 
    Header
-   ========================================= */
+    */
 header {
     position: fixed; top: 0; width: 100%;
     padding: 15px 40px;
@@ -20,6 +20,12 @@ header {
 header.header-hidden { transform: translateY(-100%); }
 
 .logo { font-weight: 700; font-size: 1.4rem; letter-spacing: -0.5px; }
+.header-logo {
+    display: block;
+    height: 80px;
+    width: auto;  
+    transition: transform 0.3s ease; }
+.header-logo:hover { transform: scale(1.05); }
 .nav-container { display: flex; align-items: center; gap: 40px; }
 nav ul { display: flex; gap: 30px; }
 
@@ -34,11 +40,18 @@ nav a:hover { color: var(--color-text); }
 }
 #theme-toggle:hover { transform: scale(1.05); }
 
-/* =========================================
-   Layout & Typography
-   ========================================= */
-main { min-height: 100vh; }
-section { padding: 120px 5vw; max-width: 1600px; margin: 0 auto; }
+/* Layout & Typography
+   */
+main { 
+    min-height: 100vh; 
+    padding-top: 140px;
+}
+
+section { 
+    padding: 60px 5vw;
+    max-width: 1600px; 
+    margin: 0 auto; 
+}
 
 .section-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; letter-spacing: -1px; margin-bottom: 60px; line-height: 1.1; }
 
@@ -47,15 +60,15 @@ section { padding: 120px 5vw; max-width: 1600px; margin: 0 auto; }
 .image-wrapper img { width: 100%; height: 60vh; object-fit: cover; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
 .image-wrapper:hover img { transform: scale(1.05); }
 
-/* =========================================
+/* 
    Grid Layouts
-   ========================================= */
+    */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
 
-/* =========================================
+/* 
    Footer
-   ========================================= */
+    */
 footer { padding: 60px 5vw; background: var(--color-card-bg); border-top: 1px solid var(--glass-border); text-align: center; font-weight: 500; color: var(--color-gray); }
 
 /* Neuer Footer Style */
@@ -87,9 +100,8 @@ footer { padding: 60px 5vw; background: var(--color-card-bg); border-top: 1px so
     padding: 30px 5vw;
 }
 
-/* =========================================
-   Mobile Responsive - Layout
-   ========================================= */
+/* Mobile Responsive Layout
+   */
 @media (max-width: 900px) {
     header { padding: 15px 20px; flex-direction: column; gap: 15px; }
     .nav-container { flex-direction: column; gap: 10px; }
@@ -98,13 +110,15 @@ footer { padding: 60px 5vw; background: var(--color-card-bg); border-top: 1px so
     .image-wrapper img { height: 40vh; }
     body { cursor: auto; }
     a { cursor: pointer; }
-    section { padding: 80px 5vw; }
+    main { padding-top: 200px; } 
+    section { padding: 40px 5vw; } 
     .section-title { margin-bottom: 40px; }
 }
 
 @media (max-width: 768px) {
     .footer-content { flex-direction: column; text-align: center; }
-    section { padding: 60px 4vw; }
+    main { padding-top: 220px; } 
+    section { padding: 30px 4vw; } 
     .section-title { font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: 30px; }
     .grid-2, .grid-3 { gap: 20px; }
     footer { padding: 40px 4vw; }

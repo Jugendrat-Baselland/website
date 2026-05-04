@@ -39,85 +39,85 @@ window.bentoProjects = [
 // Hier kannst du Mitglieder extrem einfach hinzufügen, ändern oder löschen.
 window.teamMembers = [
     {
-        name: "Qwertz Ui",
-        roleFront: "Zxcvbn Qwe",
-        roleBack: "Qwertz Uiops Lkjhg",
-        age: "17",
-        quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
-        instagram: "Vbnm_qwe",
-        image: "https://picsum.photos/seed/member1/800/1000"
+        name: "Andrin Leo Virisario",
+        roleFront: "IT-Leitung",
+        location: "Pratteln",
+        age: "20",
+        quote: "Wir sind die Zukunft!",
+        instagram: "andrinlv",
+        image: "/src/assets/portraits/Andrin.leo-virisario.jpg"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Zxcvb Nmqwe rtyui opasd.",
+        location: "Pratteln",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/member2/800/1000"
+        image: "/src/assets/portraits/Plmko.Ij.jpg"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
+        location: "Pratteln",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/member3/800/1000"
+        image: "/src/assets/portraits/Rtuz.Vb.jpg"
     },
     {
         name: "Qwertz Ui",
         roleFront: "Zxcvbn Qwe",
-        roleBack: "Qwertz Uiops Lkjhg",
+        location: "Pratteln",
         age: "17",
         quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
         instagram: "Vbnm_qwe",
-        image: "https://picsum.photos/seed/member1/800/1000"
+        image: "/src/assets/portraits/Qwertz.Ui.jpg"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Zxcvb Nmqwe rtyui opasd.",
+        location: "Pratteln",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/member2/800/1000"
+        image: "/src/assets/portraits/Plmko.Ij.jpg"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
+        location: "Pratteln",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/member3/800/1000"
+        image: "/src/assets/portraits/Rtuz.Vb.jpg"
     },
     {
         name: "Qwertz Ui",
         roleFront: "Zxcvbn Qwe",
-        roleBack: "Qwertz Uiops Lkjhg",
+        location: "Pratteln",
         age: "17",
         quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
         instagram: "Vbnm_qwe",
-        image: "https://picsum.photos/seed/member1/800/1000"
+        image: "/src/assets/portraits/Qwertz.Ui.jpg"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Zxcvb Nmqwe rtyui opasd.",
+        location: "Pratteln",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/member2/800/1000"
+        image: "/src/assets/portraits/Plmko.Ij.jpg"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Asdfg hjkl zxcvb nmqwer tyu.",
+        location: "Pratteln",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/member3/800/1000"
+        image: "/src/assets/portraits/Rtuz.Vb.jpg"
     }
     // Willst du ein neues Mitglied hinzufügen? Kopiere einfach einen Block von { bis }, füge ihn hier ein und ändere den Text!
 ];

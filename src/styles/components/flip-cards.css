@@ -130,20 +130,59 @@
 .card-back-action a { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--color-accent); transition: var(--transition-fast); }
 .card-back-action a:hover { text-decoration: underline; }
 
-/* Responsive: Auf Handys das 3D-Hovern ggf. deaktivieren oder stapeln */
+/* Responsive: Auf Handys das 3D-Hovern deaktivieren und stapeln */
 @media (max-width: 900px) {
-    .team-cards-grid { grid-template-columns: 1fr; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .flip-card-scene { aspect-ratio: auto; height: auto; }
-    /* Auf Handys lieber keine 3D-Drehung, sondern normal stapeln oder Klick-Event nutzen */
-    .flip-card-inner { position: relative; transform: none !important; box-shadow: none; display: flex; flex-direction: column; gap: 20px; }
-    .flip-card-front, .flip-card-back { position: relative; transform: none !important; aspect-ratio: 3/4; border-radius: 16px; backface-visibility: visible; }
-    .flip-card-back { border: 1px solid var(--glass-border); padding: 30px; }
-    .flip-card-back::after { display: none; }
-}
+    .team-cards-grid { 
+        grid-template-columns: 1fr; 
+        max-width: 500px; 
+        margin-left: auto; 
+        margin-right: auto; 
+    }
+    
+    .flip-card-scene { 
+        aspect-ratio: auto; 
+        height: auto; 
+        perspective: none !important;
+    }
+    
+    .flip-card-inner { 
+        position: relative; 
+        transform: none !important; 
+        transform-style: flat !important;
+        box-shadow: none; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 20px; 
+        height: auto !important; 
+        width: 100%;
+    }
+    
+    .flip-card-front, .flip-card-back { 
+        position: relative !important; 
+        transform: none !important; 
+        height: auto !important; 
+        width: 100% !important; 
+        
+        /* WICHTIG: Apple-spezifischen Befehl überschreiben, sonst bleiben Karten auf iOS unsichtbar */
+        -webkit-backface-visibility: visible !important; 
+        backface-visibility: visible !important; 
+    }
 
-@media (max-width: 768px) {
-    .team-cards-grid { max-width: 100%; gap: 30px; }
-    .flip-card-back { padding: 20px; }
-    .flip-card-front-info h3 { font-size: 1.4rem; }
-    .card-back-quote { font-size: 1rem; margin: 20px 0; }
+    /* Die Vorderseite darf ihr 3/4 Format für das Bild behalten */
+    .flip-card-front {
+        aspect-ratio: 3/4;
+        border-radius: 16px; 
+    }
+    
+    /* Die Rückseite darf auf dem Handy so hoch werden, wie der Text Platz braucht */
+    .flip-card-back { 
+        aspect-ratio: auto; 
+        border: 1px solid var(--glass-border); 
+        padding: 30px; 
+        border-radius: 16px; 
+    }
+    
+    .flip-card-back::after { 
+        display: none; 
+    }
 }
