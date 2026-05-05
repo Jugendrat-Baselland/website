@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const safeName = escapeHTML(member.name);
             const safeImage = escapeHTML(member.image);
             const safeRoleFront = escapeHTML(member.roleFront);
-            const safeLocation = escapeHTML(member.location);
+            const safeRoleBack = escapeHTML(member.roleBack);
             const safeAge = escapeHTML(member.age);
             const safeQuote = escapeHTML(member.quote);
             const safeInstagram = escapeHTML(member.instagram);
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <h3>${safeName}</h3>
                                 <div class="card-back-meta">
                                     <p><strong>Alter:</strong> ${safeAge} Jahre</p>
-                                    <p><strong>Wohnort:</strong> ${safeLocation}</p>
+                                    <p><strong>Wohnort:</strong> ${safeRoleBack}</p>
                                 </div>
                             </div>
                             <div class="card-back-quote">

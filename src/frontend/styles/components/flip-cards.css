@@ -141,8 +141,7 @@
     
     .flip-card-scene { 
         aspect-ratio: auto; 
-        height: auto; 
-        perspective: none !important;
+        height: auto;
     }
     
     .flip-card-inner { 

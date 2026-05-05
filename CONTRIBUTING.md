@@ -30,7 +30,7 @@ verpflichtest du dich, diesen einzuhalten.
 ### 🐛 Fehler melden
 
 Bevor du einen Bug meldest, prüfe bitte:
-- Ob das Problem bereits in den [Issues](../../issues) bekannt ist
+- Ob das Problem bereits in den [Issues](https://github.com/Jugendrat-Baselland/website/issues) bekannt ist
 - Ob du den neuesten Stand des `main`-Branches verwendest
 - Ob das Problem in mehreren Browsern auftritt
 
