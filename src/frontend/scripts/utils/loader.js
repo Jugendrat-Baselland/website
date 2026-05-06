@@ -1,4 +1,4 @@
-/* === loader.js === */
+/*loader.js*/
 document.documentElement.classList.add('loading');
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');

@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     const isMobile = () => window.innerWidth <= 900;
 
-    // --- 2. Apple-Style Scroll Reveal Observer ---
+    // --- Scroll Reveal Observer ---
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         observer.observe(el);
     });
 
-    // --- 3. Hide Header on Scroll ---
+    // --- Hide Header on Scroll ---
     const header = document.querySelector("header");
     let lastScrollY = window.scrollY;
 
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 4. Apple-Style Horizontal Scroll Logic ---
+    // --- Apple-Style Horizontal Scroll Logic ---
     const hzWrapper = document.getElementById('hz-wrapper');
     const hzTrack = document.getElementById('hz-track');
 
@@ -88,11 +88,53 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Event Portal Image Reveal Logic ---
-    const eventRows = document.querySelectorAll('.event-row');
-    const eventImages = document.querySelectorAll('.event-img');
+    // --- AUTOMATISCHER EVENTS-GENERATOR ---
+    const eventsData = window.eventsData;
+    const eventsListContainer = document.getElementById('events-list-container');
+    const eventsVisualsContainer = document.getElementById('events-visuals-container');
 
-    if (eventRows.length > 0 && eventImages.length > 0) {
+    if (eventsListContainer && eventsVisualsContainer && eventsData) {
+        let listHtml = '';
+        let visualsHtml = '';
+
+        eventsData.forEach((event, index) => {
+            const safeId = escapeHTML(event.id);
+            const safeDate = escapeHTML(event.date);
+            const safeTitle = escapeHTML(event.title);
+            const safeDesc = escapeHTML(event.description);
+            const safeImgDesktop = escapeHTML(event.imageDesktop);
+            const safeImgMobile = escapeHTML(event.imageMobile);
+            
+            // Nur das allererste Bild bekommt standardmäßig die Klasse "active"
+            const activeClass = index === 0 ? 'active' : '';
+
+            // Generiert die Liste (linke Seite / Mobile)
+            listHtml += `
+                <div class="event-row" data-target="${safeId}">
+                    <div class="event-date">${safeDate}</div>
+                    <div class="event-info">
+                        <h3>${safeTitle}</h3>
+                        <p>${safeDesc}</p>
+                        <img src="${safeImgMobile}" class="event-mobile-img" alt="Mobile ${safeTitle}">
+                    </div>
+                </div>
+            `;
+
+            // Generiert die Desktop-Bilder (rechte Seite)
+            visualsHtml += `
+                <img src="${safeImgDesktop}" id="${safeId}" class="event-img ${activeClass}" alt="${safeTitle}">
+            `;
+        });
+
+        // HTML ins DOM einfügen
+        eventsListContainer.innerHTML = listHtml;
+        eventsVisualsContainer.innerHTML = visualsHtml;
+
+        // --- Event Portal Image Reveal Logic (Hover Effekt aktivieren) ---
+        // Dies muss passieren, NACHDEM das HTML generiert wurde
+        const eventRows = document.querySelectorAll('.event-row');
+        const eventImages = document.querySelectorAll('.event-img');
+
         eventRows.forEach(row => {
             row.addEventListener('mouseenter', () => {
                 // Hole die ID des Ziel-Bildes
@@ -201,43 +243,126 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCursorHoverElements();
     }
 
-    // --- HORIZONTAL FILM ROLL LOGIC (Projekte) ---
+    // --- PROJEKTE & FILM-ROLL LOGIC ---
+    // --- 1. AUTOMATISCHER PROJEKTE-GENERATOR (Aktuelle Projekte) ---
+    const activeProjects = window.activeProjects;
+    const hzTrackContainer = document.getElementById('hz-track');
+
+    if (hzTrackContainer && activeProjects) {
+        let hzHtml = '';
+
+        activeProjects.forEach(project => {
+            const safeTitle = escapeHTML(project.title);
+            const safeDesc = escapeHTML(project.description);
+            
+            // Dynamisch die Bilder-Slides bauen
+            let carouselSlides = '';
+            project.images.forEach((img, index) => {
+                carouselSlides += `<img src="${escapeHTML(img)}" class="carousel-slide" alt="${safeTitle} Bild ${index + 1}">`;
+            });
+
+            // HTML zusammensetzen
+            hzHtml += `
+                <div class="hz-item">
+                    <div class="project-carousel">
+                        <button class="carousel-btn prev-btn">❮</button>
+                        <button class="carousel-btn next-btn">❯</button>
+                        <div class="carousel-track">
+                            ${carouselSlides}
+                        </div>
+                    </div>
+                    <div class="hz-info">
+                        <h3>${safeTitle}</h3>
+                        <p>${safeDesc}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        hzTrackContainer.innerHTML = hzHtml;
+
+        // Carousel Buttons aktivieren
+        const carousels = document.querySelectorAll('.project-carousel');
+        carousels.forEach(carousel => {
+            const track = carousel.querySelector('.carousel-track');
+            const prevBtn = carousel.querySelector('.prev-btn');
+            const nextBtn = carousel.querySelector('.next-btn');
+
+            if (track && prevBtn && nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
+                });
+                prevBtn.addEventListener('click', () => {
+                    track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
+                });
+            }
+        });
+    }
+
+
+    // --- 2. AUTOMATISCHER FILM-ROLL-GENERATOR (Abgeschlossene Projekte) ---
+    const completedProjects = window.completedProjects;
+    const filmRollTrackContainer = document.getElementById('film-roll-track');
+
+    if (filmRollTrackContainer && completedProjects) {
+        let filmHtml = '';
+
+        completedProjects.forEach(project => {
+            const safeTitle = escapeHTML(project.title);
+            const safeSubtitle = escapeHTML(project.subtitle);
+            const safeImage = escapeHTML(project.image);
+
+            filmHtml += `
+                <div class="film-card">
+                    <img src="${safeImage}" alt="${safeTitle}">
+                    <div class="film-info">
+                        <h3>${safeTitle}</h3>
+                        <p>${safeSubtitle}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        filmRollTrackContainer.innerHTML = filmHtml;
+    }
+
+
+    // --- 3. HORIZONTAL SCROLL LOGIC (Der Sticky-Effekt) ---
     const filmWrapper = document.querySelector('.film-roll-wrapper');
     const filmTrack = document.querySelector('.film-roll-track');
 
     if (filmWrapper && filmTrack) {
         window.addEventListener('scroll', () => {
-            // Auf mobilen Geräten die JS-Scroll-Logik ignorieren (CSS scroll-snap übernimmt)
-            if (isMobile()) return;
+            // Auf mobilen Geräten JS abbrechen, falls CSS Scroll-Snap genutzt wird
+            if (typeof isMobile === 'function' && isMobile()) return;
 
-            // Holt die Position des Wrappers
             const wrapperRect = filmWrapper.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             
-            // Wenn der obere Rand des Wrappers den oberen Bildschirmrand erreicht hat
+            // maxTranslate berechnet, wie weit das Element nach links rutschen darf
+            const maxTranslate = filmTrack.scrollWidth - window.innerWidth + 100; 
+            
+            // Befinden wir uns gerade IN der Sticky-Phase?
             if (wrapperRect.top < 0 && wrapperRect.bottom > windowHeight) {
-                // Berechne, wie viel Prozent wir schon durch den Wrapper gescrollt sind (0 bis 1)
                 const scrollProgress = Math.abs(wrapperRect.top) / (wrapperRect.height - windowHeight);
-                
-                // Berechne die maximale Verschiebung nach links
-                // (Gesamtbreite der Rolle minus Bildschirmbreite + etwas Puffer)
-                const maxTranslate = filmTrack.scrollWidth - window.innerWidth + 100;
-                
-                // Wende die Verschiebung an
                 filmTrack.style.transform = `translateX(-${scrollProgress * maxTranslate}px)`;
+            
+            // Sind wir oberhalb des Wrappers?
             } else if (wrapperRect.top >= 0) {
-                // Setze zurück, wenn wir oben drüber sind
                 filmTrack.style.transform = `translateX(0px)`;
+            
+            // Sind wir unterhalb des Wrappers? (Wichtig, damit es nicht zurückspringt)
+            } else if (wrapperRect.bottom <= windowHeight) {
+                filmTrack.style.transform = `translateX(-${maxTranslate}px)`;
             }
         });
         
-        // Cursor-Hover für die Film-Karten aktivieren
-        updateCursorHoverElements();
+        // Custom Cursor aktivieren, falls die Funktion existiert
+        if (typeof updateCursorHoverElements === 'function') {
+            updateCursorHoverElements();
+        }
     }
 
-});
-
-document.addEventListener('DOMContentLoaded', () => {
     // --- Mobile / Touch Detection (second listener scope) ---
     const isTouchDevice2 = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
@@ -305,35 +430,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500); // 1.5 Sekunden "Ladezeit"
         });
     }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    // --- PROJECT IMAGE CAROUSEL LOGIC ---
-    const carousels = document.querySelectorAll('.project-carousel');
-
-    carousels.forEach(carousel => {
-        const track = carousel.querySelector('.carousel-track');
-        const prevBtn = carousel.querySelector('.prev-btn');
-        const nextBtn = carousel.querySelector('.next-btn');
-
-        if (track && prevBtn && nextBtn) {
-            // Klick auf den rechten Pfeil
-            nextBtn.addEventListener('click', () => {
-                // Scrollt exakt um die Breite eines Bildes nach rechts
-                track.scrollBy({ 
-                    left: track.clientWidth, 
-                    behavior: 'smooth' 
-                });
-            });
-
-            // Klick auf den linken Pfeil
-            prevBtn.addEventListener('click', () => {
-                // Scrollt exakt um die Breite eines Bildes nach links
-                track.scrollBy({ 
-                    left: -track.clientWidth, 
-                    behavior: 'smooth' 
-                });
-            });
-        }
-    });
 });

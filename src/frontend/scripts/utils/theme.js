@@ -1,4 +1,4 @@
-/* === theme.js === */
+/*theme.js*/
 const savedTheme = localStorage.getItem("moStudioTheme");
 if (savedTheme === "dark") { document.documentElement.classList.add("dark-mode"); }
 

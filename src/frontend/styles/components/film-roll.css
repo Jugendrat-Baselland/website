@@ -20,8 +20,9 @@
 
 .film-roll-title {
     position: absolute;
-    top: 15vh;
+    top: 0;
     left: 5vw;
+    right: 5vw;
     font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: 800;
     z-index: 10;
@@ -41,7 +42,7 @@
     border-radius: 24px;
     position: relative;
     overflow: hidden;
-    cursor: none;
+    cursor: auto;
     filter: grayscale(100%); /* Startet Schwarz-Weiß (Vergangenheit) */
     transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -74,10 +75,51 @@
 
 /* Responsive: Auf Handys schalten wir das auf normales seitliches Wischen (Swipe) um */
 @media (max-width: 768px) {
-    .film-roll-wrapper { height: auto; margin-top: 50px; overflow: hidden; }
-    .film-roll-sticky { position: relative; height: auto; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 100px 0 40px; scroll-snap-type: x mandatory; }
-    .film-roll-title { top: 20px; }
-    .film-roll-track { transform: none !important; padding: 0 20px; }
-    .film-card { flex: 0 0 85vw; height: 450px; filter: grayscale(0%); scroll-snap-align: center; cursor: pointer; }
-    .film-info h3 { font-size: 1.4rem; }
+    .film-roll-wrapper { 
+        height: auto; 
+        margin-top: 50px; 
+        overflow: hidden; 
+    }
+    
+    .film-roll-sticky { 
+        position: relative; 
+        height: auto; 
+        overflow: visible; /* WICHTIG: Hier nicht mehr scrollen! */
+        padding: 100px 0 30px; /* Platz für den Titel oben */
+    }
+    
+    .film-roll-title { 
+        position: absolute; 
+        top: 0; 
+        left: 20px; /* Bündig mit dem Start der Karten */
+        z-index: 10;
+    }
+    
+    .film-roll-track { 
+        transform: none !important; 
+        padding: 0 20px; 
+        gap: 20px; /* Sorgt für gleichmäßigen Abstand beim Wischen */
+        /* HIER scrollen wir jetzt: */
+        display: flex;
+        overflow-x: auto; 
+        -webkit-overflow-scrolling: touch; 
+        scroll-snap-type: x mandatory; 
+    }
+    
+    /* Optional: Versteckt den hässlichen grauen Scrollbalken auf dem Handy für einen cleaneren Look */
+    .film-roll-track::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .film-card { 
+        flex: 0 0 85vw; 
+        height: 450px; 
+        filter: grayscale(0%); 
+        scroll-snap-align: center; /* Karten rasten schön in der Mitte ein */
+        cursor: auto; 
+    }
+    
+    .film-info h3 { 
+        font-size: 1.4rem; 
+    }
 }

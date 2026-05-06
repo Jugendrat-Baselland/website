@@ -1,6 +1,6 @@
-/* =========================================
+/*
    Homepage - Dynamic Bento Box Grid
-   ========================================= */
+ */
 .bento-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -16,7 +16,7 @@
     position: relative;
     border-radius: 32px;
     overflow: hidden;
-    cursor: none;
+    cursor: auto;
     background: #000; /* Fallback */
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     transform: translateZ(0); /* Hardware Acceleration */

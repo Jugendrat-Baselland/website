@@ -11,7 +11,7 @@
     border-radius: 24px;
     overflow: hidden;
     aspect-ratio: 3/4; /* Perfektes Portrait-Format */
-    cursor: none;
+    cursor: auto;
     background: #000; /* Dunkler Hintergrund für den Reveal-Effekt */
 }
 
