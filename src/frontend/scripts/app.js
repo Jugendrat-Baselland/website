@@ -417,34 +417,51 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- FORMULAR SUBMIT ANIMATION ---
     const contactForm = document.getElementById('interactive-contact-form');
     
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Verhindert das Neuladen der Seite
+        if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => { // Wichtig: 'async' hinzufügen!
+            e.preventDefault(); 
             
             const submitBtn = contactForm.querySelector('.btn-magnetic');
             const originalText = submitBtn.textContent;
             
             // 1. Lade-Status
-            submitBtn.textContent = 'Wird gesendet... ';
+            submitBtn.textContent = 'Wird gesendet...';
             submitBtn.style.opacity = '0.8';
+            submitBtn.disabled = true; 
             
-            // 2. Fake-Server-Delay (tut so, als würde er senden)
-            setTimeout(() => {
-                // 3. Erfolgs-Status
-                submitBtn.classList.add('success');
-                submitBtn.textContent = 'Nachricht erfolgreich gesendet! ';
+            // Alle Daten aus dem Formular packen
+            const formData = new FormData(contactForm);
+            
+            try {
+                // 2. Daten an unser neues PHP-Script senden
+                const response = await fetch('backend/php/kontakt/send-mail.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // 3. Antwort vom Server prüfen
+                if (response.ok) {
+                    // Erfolgs-Status (Die Mail ist beim PHP-Script durchgegangen!)
+                    submitBtn.classList.add('success');
+                    submitBtn.textContent = 'Nachricht gesendet! ✓';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Fehler beim Senden');
+                }
+            } catch (error) {
+                // Fehler-Status
+                submitBtn.textContent = 'Fehler aufgetreten ✗';
+                console.error(error);
+            } finally {
                 submitBtn.style.opacity = '1';
                 
-                // Formular leeren
-                contactForm.reset();
-                
-                // Optional: Button nach 5 Sekunden wieder normalisieren
+                // Button nach 5 Sekunden normalisieren
                 setTimeout(() => {
                     submitBtn.classList.remove('success');
                     submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
                 }, 5000);
-                
-            }, 1500); // 1.5 Sekunden "Ladezeit"
+            }
         });
     }
 });

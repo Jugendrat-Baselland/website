@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neue Kontaktanfrage</title>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f5f7; margin: 0; padding: 20px;">
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+        
+        <tr>
+            <td style="background-color: #111111; padding: 30px 20px; text-align: center;">
+                <h1 style="margin: 0; font-size: 22px; color: #ffffff; font-weight: 600; letter-spacing: 0.5px;">Neue Kontaktanfrage</h1>
+                <p style="margin: 8px 0 0 0; font-size: 14px; color: #aaaaaa;">Jugendrat Baselland Website</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="padding: 30px;">
+                <p style="font-size: 16px; color: #333333; margin-top: 0; line-height: 1.5;">Hallo Jugendrat Baselland,</p>
+                <p style="font-size: 16px; color: #333333; line-height: 1.5;">es ist eine neue Nachricht über das Kontaktformular der Website eingegangen. Hier sind die Details:</p>
+                
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 25px; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee; width: 80px; font-weight: 600; color: #555555; font-size: 15px;">Name:</td>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee; color: #111111; font-size: 15px;">{{NAME}}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee; font-weight: 600; color: #555555; font-size: 15px;">E-Mail:</td>
+                        <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee; font-size: 15px;">
+                            <a href="mailto:{{EMAIL}}" style="color: #0056b3; text-decoration: none; font-weight: 500;">{{EMAIL}}</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 15px 0 5px 0; font-weight: 600; color: #555555; font-size: 15px;">Nachricht:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding: 15px; color: #333333; background-color: #f8f9fa; border-radius: 6px; border: 1px solid #e9ecef; font-size: 15px; line-height: 1.6;">
+                            {{MESSAGE}}
+                        </td>
+                    </tr>
+                </table>
+                
+            </td>
+        </tr>
+
+        <tr>
+            <td style="background-color: #f8f9fa; padding: 20px; text-align: center; border-top: 1px solid #eeeeee;">
+                <p style="margin: 0; font-size: 13px; color: #888888; line-height: 1.5;">
+                    Diese E-Mail wurde automatisch über das Formular auf <strong>jugendrat-bl.ch</strong> generiert.<br>
+                    <em>Tipp: Du kannst direkt auf diese E-Mail antworten, um <strong>{{NAME}}</strong> zurückzuschreiben.</em>
+                </p>
+            </td>
+        </tr>
+        
+    </table>
+
+</body>
+</html>
