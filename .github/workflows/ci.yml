@@ -63,7 +63,7 @@ jobs:
       - name: CSS-Dateien prüfen
         run: |
           echo "Prüfe ob alle CSS-Dateien vorhanden sind..."
-          for file in src/styles/base.css src/styles/layout.css src/styles/components.css; do
+          for file in src/frontend/styles/base.css src/frontend/styles/layout.css src/frontend/styles/components.css; do
             if [ ! -f "$file" ]; then
               echo "❌ Fehlend: $file"
               exit 1
@@ -75,7 +75,7 @@ jobs:
       - name: JavaScript-Dateien prüfen
         run: |
           echo "Prüfe ob alle JavaScript-Dateien vorhanden sind..."
-          for file in src/scripts/app.js src/scripts/services/data.js src/scripts/utils/theme.js src/scripts/utils/loader.js; do
+          for file in src/frontend/scripts/app.js src/frontend/scripts/services/data.js src/frontend/scripts/utils/theme.js src/frontend/scripts/utils/loader.js; do
             if [ ! -f "$file" ]; then
               echo "❌ Fehlend: $file"
               exit 1
