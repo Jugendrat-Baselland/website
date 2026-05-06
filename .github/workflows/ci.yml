@@ -37,14 +37,14 @@ jobs:
           echo "Prüfe ob alle HTML-Dateien vorhanden sind..."
           files=(
             "index.html"
-            "src/pages/ueber-uns.html"
-            "src/pages/projekte.html"
-            "src/pages/events.html"
-            "src/pages/team.html"
-            "src/pages/kontakt.html"
-            "src/pages/impressum.html"
-            "src/pages/disclaimer.html"
-            "src/pages/404.html"
+            "src/frontend/pages/ueber-uns.html"
+            "src/frontend/pages/projekte.html"
+            "src/frontend/pages/events.html"
+            "src/frontend/pages/team.html"
+            "src/frontend/pages/kontakt.html"
+            "src/frontend/pages/impressum.html"
+            "src/frontend/pages/disclaimer.html"
+            "src/frontend/pages/404.html"
           )
           missing=0
           for file in "${files[@]}"; do
