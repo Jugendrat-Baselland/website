@@ -41,83 +41,83 @@ window.teamMembers = [
     {
         name: "Andrin Leo Virisario",
         roleFront: "IT-Leitung",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "IT-Infrastruktur, IT-Support, Social Media",
         age: "20",
         quote: "Wir sind die Zukunft!",
         instagram: "andrinlv",
-        image: "https://picsum.photos/seed/team-andrin/800/1000"
+        image: "/src/frontend/assets/portraits/Andrin.leo-virisario.jpg"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/team-plmko/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/team-rtuz/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Qwertz Ui",
         roleFront: "Zxcvbn Qwe",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "17",
         quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
         instagram: "Vbnm_qwe",
-        image: "https://picsum.photos/seed/team-qwertz/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/team-plmko/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "IT-Infrastruktur, IT-Support, Social Media",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/team-rtuz/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Qwertz Ui",
         roleFront: "Zxcvbn Qwe",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "17",
         quote: "Asdfg hjklz xcvbn mqwer tyuio pasdf ghjkl mnbv.",
         instagram: "Vbnm_qwe",
-        image: "https://picsum.photos/seed/team-qwertz/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Plmko Ij",
         roleFront: "Yxcvb Nm",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "19",
         quote: "Qwert yuiop asdfg hjkl zxcvb nmqwe rtyui opasd fghjk.",
         instagram: "Plmko_insta",
-        image: "https://picsum.photos/seed/team-plmko/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     },
     {
         name: "Rtuz Vb",
         roleFront: "Qwerty Uiop",
-        roleBack: "Prattelns bester Coder",
+        roleBack: "Aufgaben: Website, Social Media, IT-Support",
         age: "16",
         quote: "Vbnm kljhgf dsaqw ertyuio pasdf ghjkl.",
         instagram: "Rtuz_official",
-        image: "https://picsum.photos/seed/team-rtuz/800/1000"
+        image: "/src/frontend/assets/portraits/Anonym.png"
     }
     // Willst du ein neues Mitglied hinzufügen? Kopiere einfach einen Block von { bis }, füge ihn hier ein und ändere den Text!
 ];

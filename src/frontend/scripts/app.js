@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Scroll Reveal Observer ---
     const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.15 // Trigger when 15% is visible
+    root: null,
+    rootMargin: '0px 0px -10% 0px',  // erst auslösen wenn ~10% in den Viewport reingescrollt
+    threshold: 0
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCursorHoverElements();
     }
 
-    // --- AUTOMATISCHER KARTEN-GENERATOR ---
+// --- AUTOMATISCHER KARTEN-GENERATOR ---
     // Greift auf window.teamMembers aus data.js zu
     const teamMembers = window.teamMembers;
     const teamContainer = document.getElementById('team-grid-container');
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const safeInstagram = escapeHTML(member.instagram);
             
             htmlContent += `
-                <div class="flip-card-scene ${delayClass}">
+                <div class="flip-card-scene reveal ${delayClass}">
                     <div class="flip-card-inner">
                         
                         <div class="flip-card-front">
@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <h3>${safeName}</h3>
                                 <div class="card-back-meta">
                                     <p><strong>Alter:</strong> ${safeAge} Jahre</p>
-                                    <p><strong>Wohnort:</strong> ${safeRoleBack}</p>
+                                    <p><strong>Aufgaben:</strong> ${safeRoleBack}</p>
                                 </div>
                             </div>
                             <div class="card-back-quote">
@@ -239,8 +239,25 @@ document.addEventListener("DOMContentLoaded", () => {
         // Fügt das generierte HTML in die Seite ein
         teamContainer.innerHTML = htmlContent;
         
-        // Cursor-Hover-Events auf die neuen Elemente anwenden
-        updateCursorHoverElements();
+        // EIGENER OBSERVER NUR FÜR DIE KARTEN (Bulletproof)
+        const cardObserver = new IntersectionObserver((entries, observerInstance) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observerInstance.unobserve(entry.target); // Nur einmal animieren
+                }
+            });
+        }, { threshold: 0.15 });
+
+        // Wendet den neuen Observer auf alle soeben erstellten Karten an
+        teamContainer.querySelectorAll('.reveal').forEach(el => {
+            cardObserver.observe(el);
+        });
+        
+        // Cursor-Hover-Events nur anwenden, wenn die Funktion existiert
+        if (typeof updateCursorHoverElements === 'function') {
+            updateCursorHoverElements();
+        }
     }
 
     // --- PROJEKTE & FILM-ROLL LOGIC ---

@@ -21,7 +21,7 @@
     padding: 50px 0;
     border-bottom: 1px solid var(--glass-border);
     transition: var(--transition-main);
-    cursor: none;
+    cursor: auto;
     position: relative;
 }
 

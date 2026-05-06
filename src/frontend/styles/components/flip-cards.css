@@ -13,7 +13,7 @@
 .flip-card-scene {
     aspect-ratio: 3/4; /* Kartenformat */
     perspective: 2000px; /* Gibt dem 3D-Raum Tiefe. Kleinerer Wert = extremerer Effekt */
-    cursor: none; /* Custom Cursor dot verwenden */
+    cursor: auto;
     will-change: transform;
 }
 
@@ -137,17 +137,19 @@
         max-width: 500px; 
         margin-left: auto; 
         margin-right: auto; 
+        gap: 50px; /* Etwas mehr Luft zwischen den Profilen */
     }
     
     .flip-card-scene { 
         aspect-ratio: auto; 
         height: auto;
+        perspective: none; /* WICHTIG: 3D-Raum komplett abschalten */
     }
     
     .flip-card-inner { 
         position: relative; 
         transform: none !important; 
-        transform-style: flat !important;
+        transform-style: initial !important; /* 'initial' ist hier sicherer als 'flat' */
         box-shadow: none; 
         display: flex; 
         flex-direction: column; 
@@ -159,22 +161,36 @@
     .flip-card-front, .flip-card-back { 
         position: relative !important; 
         transform: none !important; 
-        height: auto !important; 
         width: 100% !important; 
-        
-        /* WICHTIG: Apple-spezifischen Befehl überschreiben, sonst bleiben Karten auf iOS unsichtbar */
         -webkit-backface-visibility: visible !important; 
         backface-visibility: visible !important; 
+        
+        /* WICHTIG: Verhindert den 0-Pixel-Höhe-Bug im Flexbox-Layout */
+        display: block !important; 
     }
 
     /* Die Vorderseite darf ihr 3/4 Format für das Bild behalten */
     .flip-card-front {
+        height: auto !important; 
         aspect-ratio: 3/4;
         border-radius: 16px; 
+        min-height: 350px; /* Sicherheits-Netz für sture Mobile-Browser */
+        overflow: hidden;
+    }
+
+    /* Das Bild muss auf dem Handy absolute Positionierung nutzen, 
+       damit es das aspect-ratio der .flip-card-front perfekt füllt */
+    .flip-card-front img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
     }
     
     /* Die Rückseite darf auf dem Handy so hoch werden, wie der Text Platz braucht */
     .flip-card-back { 
+        height: auto !important;
         aspect-ratio: auto; 
         border: 1px solid var(--glass-border); 
         padding: 30px; 

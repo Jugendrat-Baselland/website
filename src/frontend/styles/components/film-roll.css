@@ -11,7 +11,7 @@
 .film-roll-sticky {
     position: sticky;
     top: 0;
-    height: 100vh;
+    height: 110vh;
     display: flex;
     align-items: center;
     overflow: hidden;
