@@ -1,8 +1,6 @@
-/* =========================================
-   APP.JS - INTERACTIVE ENGINE (Logik)
-   ========================================= */
+/*APP.JS - INTERACTIVE ENGINE (Logik)*/
 
-// --- HTML Escape Utility (XSS Prevention) ---
+//HTML Escape Utility (XSS Prevention)
 function escapeHTML(str) {
     if (typeof str !== 'string') return '';
     return str
@@ -15,11 +13,11 @@ function escapeHTML(str) {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- Mobile / Touch Detection ---
+    //Mobile / Touch Detection
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     const isMobile = () => window.innerWidth <= 900;
 
-    // --- Scroll Reveal Observer ---
+    //Scroll Reveal Observer
     const observerOptions = {
     root: null,
     rootMargin: '0px 0px -10% 0px',  // erst auslösen wenn ~10% in den Viewport reingescrollt
@@ -39,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         observer.observe(el);
     });
 
-    // --- Hide Header on Scroll ---
+    //Hide Header on Scroll
     const header = document.querySelector("header");
     let lastScrollY = window.scrollY;
 
@@ -60,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- Apple-Style Horizontal Scroll Logic ---
+    //Apple-Style Horizontal Scroll Logic
     const hzWrapper = document.getElementById('hz-wrapper');
     const hzTrack = document.getElementById('hz-track');
 
@@ -88,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- AUTOMATISCHER EVENTS-GENERATOR ---
+    //AUTOMATISCHER EVENTS-GENERATOR
     const eventsData = window.eventsData;
     const eventsListContainer = document.getElementById('events-list-container');
     const eventsVisualsContainer = document.getElementById('events-visuals-container');
@@ -105,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const safeImgDesktop = escapeHTML(event.imageDesktop);
             const safeImgMobile = escapeHTML(event.imageMobile);
             
-            // Nur das allererste Bild bekommt standardmäßig die Klasse "active"
+            // Nur das allererste Bild bekommt standardmässig die Klasse "active"
             const activeClass = index === 0 ? 'active' : '';
 
             // Generiert die Liste (linke Seite / Mobile)
@@ -130,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         eventsListContainer.innerHTML = listHtml;
         eventsVisualsContainer.innerHTML = visualsHtml;
 
-        // --- Event Portal Image Reveal Logic (Hover Effekt aktivieren) ---
+        //Event Portal Image Reveal Logic (Hover Effekt aktivieren)
         // Dies muss passieren, NACHDEM das HTML generiert wurde
         const eventRows = document.querySelectorAll('.event-row');
         const eventImages = document.querySelectorAll('.event-img');
@@ -152,7 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- AUTOMATISCHER BENTO-GENERATOR ---
+    //AUTOMATISCHER BENTO-GENERATOR
     // Greift auf window.bentoProjects aus data.js zu
     const bentoProjects = window.bentoProjects;
     const bentoContainer = document.getElementById('bento-grid-container');
@@ -184,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCursorHoverElements();
     }
 
-// --- AUTOMATISCHER KARTEN-GENERATOR ---
+//AUTOMATISCHER KARTEN-GENERATOR
     // Greift auf window.teamMembers aus data.js zu
     const teamMembers = window.teamMembers;
     const teamContainer = document.getElementById('team-grid-container');
@@ -260,8 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // --- PROJEKTE & FILM-ROLL LOGIC ---
-    // --- 1. AUTOMATISCHER PROJEKTE-GENERATOR (Aktuelle Projekte) ---
+    //PROJEKTE & FILM-ROLL LOGIC
+    //1. AUTOMATISCHER PROJEKTE-GENERATOR (Aktuelle Projekte)
     const activeProjects = window.activeProjects;
     const hzTrackContainer = document.getElementById('hz-track');
 
@@ -317,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --- 2. AUTOMATISCHER FILM-ROLL-GENERATOR (Abgeschlossene Projekte) ---
+    //2. AUTOMATISCHER FILM-ROLL-GENERATOR (Abgeschlossene Projekte)
     const completedProjects = window.completedProjects;
     const filmRollTrackContainer = document.getElementById('film-roll-track');
 
@@ -344,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // --- 3. HORIZONTAL SCROLL LOGIC (Der Sticky-Effekt) ---
+    //3. HORIZONTAL SCROLL LOGIC (Der Sticky-Effekt)
     const filmWrapper = document.querySelector('.film-roll-wrapper');
     const filmTrack = document.querySelector('.film-roll-track');
 
@@ -380,10 +378,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // --- Mobile / Touch Detection (second listener scope) ---
+    //Mobile / Touch Detection (second listener scope)
     const isTouchDevice2 = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
-    // --- MAGNETIC BUTTON LOGIC ---
+    //MAGNETIC BUTTON LOGIC
     const magneticWraps = document.querySelectorAll('.magnetic-wrap');
 
     magneticWraps.forEach(wrap => {
@@ -414,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- FORMULAR SUBMIT ANIMATION ---
+    //FORMULAR SUBMIT ANIMATION
     const contactForm = document.getElementById('interactive-contact-form');
     
         if (contactForm) {
