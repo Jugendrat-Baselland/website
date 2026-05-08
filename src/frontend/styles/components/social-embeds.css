@@ -1,20 +1,18 @@
-/* =========================================
-   Universal Social Embed - Glass Card
-   ========================================= */
+
 .social-glass-card {
-    /* Glas-Design passend zum Jugendrat-Style */
+    
     background: var(--glass-bg);
     backdrop-filter: var(--blur-effect);
     -webkit-backdrop-filter: var(--blur-effect);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     
-    /* Layout & Abstände */
+    
     padding: 30px;
-    max-width: 600px; /* Breite limitieren, damit es auf dem PC nicht riesig wird */
+    max-width: 600px; 
     margin: 40px auto; 
     
-    /* Subtiler Schatten & Animation */
+    
     box-shadow: 0 15px 40px rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -24,7 +22,7 @@
     box-shadow: 0 20px 50px rgba(0,0,0,0.1);
 }
 
-/* Header-Bereich (Titel & Text) */
+
 .social-glass-card .card-header {
     margin-bottom: 20px;
     text-align: left;
@@ -44,16 +42,14 @@
     font-weight: 500;
 }
 
-/* Der iFrame (Das eigentliche Element) */
+
 .social-glass-card iframe {
     display: block;
-    width: 100% !important; /* Zwingt alle Widgets, die Karte auszufüllen */
-    /* HINWEIS: Wir setzen hier KEINE height. 
-       Die Höhe kommt direkt aus dem HTML-Code (z.B. height="500"), 
-       damit Discord groß und Spotify klein sein kann! */
+    width: 100% !important; 
+    
 }
 
-/* Mobile Optimierung */
+
 @media (max-width: 600px) {
     .social-glass-card {
         padding: 20px;

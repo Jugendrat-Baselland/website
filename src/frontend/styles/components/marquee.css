@@ -1,15 +1,13 @@
-/* =========================================
-   Über Uns - Artistic & Interactive
-   ========================================= */
 
-/* Endlos durchlaufender Text (Marquee) */
+
+
 .marquee-container {
     width: 100%;
     overflow: hidden;
     white-space: nowrap;
     padding: 20px 0;
     position: relative;
-    margin-bottom: -80px; /* Zieht das nachfolgende Bild in den Text */
+    margin-bottom: -80px; 
     z-index: 0;
 }
 
@@ -18,7 +16,7 @@
     font-size: clamp(4rem, 10vw, 10rem);
     font-weight: 800;
     color: transparent;
-    -webkit-text-stroke: 3px var(--color-text); /* Umriss-Schrift */
+    -webkit-text-stroke: 3px var(--color-text); 
     text-transform: uppercase;
     animation: marquee 40s linear infinite;
     letter-spacing: -2px;

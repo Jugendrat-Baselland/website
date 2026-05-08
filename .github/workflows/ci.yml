@@ -1,10 +1,4 @@
-# CI – Kontinuierliche Integration
-#
-# Dieser Workflow läuft bei jedem Push und Pull Request.
-# Er prüft die statische Website auf HTML-Validität und Struktur.
-
 name: CI
-
 on:
   push:
     branches:
@@ -14,15 +8,10 @@ on:
     branches:
       - main
       - develop
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
-  # -------------------------------------------------------------------------
-  # HTML-Validierung
-  # -------------------------------------------------------------------------
   validate:
     name: HTML Validierung
     runs-on: ubuntu-latest
@@ -31,7 +20,6 @@ jobs:
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-
       - name: HTML-Dateien prüfen
         run: |
           echo "Prüfe ob alle HTML-Dateien vorhanden sind..."
@@ -59,7 +47,6 @@ jobs:
             echo "::error::$missing HTML-Datei(en) fehlen!"
             exit 1
           fi
-
       - name: CSS-Dateien prüfen
         run: |
           echo "Prüfe ob alle CSS-Dateien vorhanden sind..."
@@ -71,7 +58,6 @@ jobs:
               echo "✅ Vorhanden: $file"
             fi
           done
-
       - name: JavaScript-Dateien prüfen
         run: |
           echo "Prüfe ob alle JavaScript-Dateien vorhanden sind..."
@@ -83,10 +69,6 @@ jobs:
               echo "✅ Vorhanden: $file"
             fi
           done
-
-  # -------------------------------------------------------------------------
-  # Link-Prüfung
-  # -------------------------------------------------------------------------
   links:
     name: Links prüfen
     runs-on: ubuntu-latest
@@ -96,31 +78,24 @@ jobs:
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-
       - name: Interne Links auf Gültigkeit prüfen
         run: |
           echo "Prüfe interne Verlinkungen..."
           errors=0
-
-          # Prüfe ob verlinkte Dateien aus index.html existieren
           for link in $(grep -oP 'href="([^"#]+?\.html)"' index.html | grep -oP '"[^"]*"' | tr -d '"'); do
             if [ ! -f "$link" ]; then
               echo "❌ Toter Link in index.html: $link"
               errors=$((errors + 1))
             fi
           done
-
-          # Prüfe Links in allen Unterseiten
           for page in src/pages/*.html; do
             for link in $(grep -oP 'href="([^"#:]+?\.html)"' "$page" | grep -oP '"[^"]*"' | tr -d '"'); do
-              # Relativer Pfad von src/pages/ aus auflösen
               resolved="src/pages/$link"
               if [ ! -f "$resolved" ] && [ ! -f "$link" ]; then
                 echo "⚠️  Möglicherweise toter Link in $page: $link"
               fi
             done
           done
-
           if [ $errors -gt 0 ]; then
             echo "::error::$errors tote Links in index.html gefunden!"
             exit 1

@@ -1,28 +1,16 @@
-# CD – Kontinuierliches Deployment auf GitHub Pages
-#
-# Dieser Workflow deployt die statische Website automatisch auf GitHub Pages,
-# wenn Änderungen auf den main-Branch gepusht werden.
-
 name: CD
-
 on:
   push:
     branches:
       - main
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: "pages"
   cancel-in-progress: false
-
 jobs:
-  # -------------------------------------------------------------------------
-  # Deployment auf GitHub Pages
-  # -------------------------------------------------------------------------
   deploy:
     name: Deploy → GitHub Pages
     runs-on: ubuntu-latest
@@ -32,15 +20,12 @@ jobs:
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-
       - name: GitHub Pages konfigurieren
         uses: actions/configure-pages@v5
-
       - name: Website als Artefakt hochladen
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-
       - name: Auf GitHub Pages deployen
         id: deployment
         uses: actions/deploy-pages@v4

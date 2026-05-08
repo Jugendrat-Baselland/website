@@ -1,6 +1,4 @@
-/* =========================================
-   Cards
-   ========================================= */
+
 .card {
     background: var(--color-card-bg);
     padding: 50px; border-radius: 24px;

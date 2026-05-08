@@ -38,6 +38,6 @@ und dieses Projekt folgt der [Semantischen Versionierung](https://semver.org/lan
 
 ---
 
-<!-- Versionsverweise -->
+
 [Unveröffentlicht]: https://github.com/Jugendrat-Baselland/website/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/Jugendrat-Baselland/website/releases/tag/v1.0.0

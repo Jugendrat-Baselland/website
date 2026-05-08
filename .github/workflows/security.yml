@@ -1,11 +1,4 @@
-# Security – Automatisierte Sicherheits-Scans
-#
-# Dieser Workflow führt regelmäßige Sicherheitsprüfungen durch:
-# - Statische Code-Analyse (CodeQL) für JavaScript
-# - Secret-Scanning (via GitHub Advanced Security)
-
 name: Security
-
 on:
   push:
     branches:
@@ -15,13 +8,8 @@ on:
     branches:
       - main
   schedule:
-    # Wöchentlich am Montag um 02:00 UTC
     - cron: '0 2 * * 1'
-
 jobs:
-  # -------------------------------------------------------------------------
-  # CodeQL – Statische Code-Analyse für JavaScript
-  # -------------------------------------------------------------------------
   codeql:
     name: CodeQL Analyse
     runs-on: ubuntu-latest
@@ -32,12 +20,10 @@ jobs:
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-
       - name: CodeQL initialisieren
         uses: github/codeql-action/init@v3
         with:
           languages: javascript
-
       - name: CodeQL Analyse durchführen
         uses: github/codeql-action/analyze@v3
         with:

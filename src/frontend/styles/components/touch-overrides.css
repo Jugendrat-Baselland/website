@@ -1,33 +1,31 @@
-/* =========================================
-   Touch Device Overrides (hover: none)
-   ========================================= */
+
 @media (hover: none) and (pointer: coarse) {
-    /* Cursor: disable everywhere on touch */
+    
     #cursor-dot { display: none !important; }
     body, a, .btn-submit, .magnetic-wrap, .btn-magnetic,
     .film-card, .bento-item, .hz-item, .error-scene,
     .team-member, .flip-card-scene, .event-row { cursor: auto; }
     a, button, .btn-submit, .btn-magnetic, .btn-beam { cursor: pointer; }
 
-    /* Bento Box: always show content on touch */
+    
     .bento-content { bottom: 0; opacity: 1; }
     .bento-img { filter: brightness(0.6); }
 
-    /* Team member: always reveal on touch */
+    
     .team-member img { filter: grayscale(0%) blur(0px); opacity: 1; }
     .team-info { bottom: 0; }
 
-    /* Artistic overlay: always visible on touch */
+    
     .artistic-overlay { transform: translateY(0); opacity: 1; }
 
-    /* Film cards: always colorized on touch */
+    
     .film-card { filter: grayscale(0%); }
 
-    /* Event rows: disable blur dimming on touch */
+    
     .events-list:hover .event-row:not(:hover) { opacity: 1; filter: none; }
     .event-row:hover { transform: none; }
 
-    /* Disable hover transforms on cards */
+    
     .card:hover { transform: none; }
     .hz-item:hover img { transform: none; }
 }

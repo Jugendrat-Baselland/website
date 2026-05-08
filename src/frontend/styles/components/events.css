@@ -1,6 +1,4 @@
-/* =========================================
-   Event Portal - Interactive List
-   ========================================= */
+
 .events-portal {
     display: flex;
     gap: 60px;
@@ -8,7 +6,7 @@
     padding-bottom: 100px;
 }
 
-/* Linke Seite: Die Liste */
+
 .events-list {
     flex: 1;
     display: flex;
@@ -25,14 +23,14 @@
     position: relative;
 }
 
-/* Der Fokus-Effekt: Dimmt andere ab, wenn die Liste gehovert wird */
+
 .events-list:hover .event-row:not(:hover) {
     opacity: 0.3;
     filter: blur(2px);
 }
 
 .event-row:hover {
-    transform: translateX(30px); /* Slidet spielerisch nach rechts */
+    transform: translateX(30px); 
 }
 
 .event-date {
@@ -55,7 +53,7 @@
     font-size: 1.1rem;
 }
 
-/* Mobile Bild-Platzhalter (auf Desktop versteckt) */
+
 .event-mobile-img {
     display: none;
     width: 100%;
@@ -65,12 +63,12 @@
     margin-top: 20px;
 }
 
-/* Rechte Seite: Sticky Image Reveal */
+
 .events-visuals {
     width: 40vw;
     height: 70vh;
     position: sticky;
-    top: 15vh; /* Bleibt beim Scrollen hier stehen */
+    top: 15vh; 
     border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 30px 60px rgba(0,0,0,0.1);
@@ -89,18 +87,18 @@
     z-index: 1;
 }
 
-/* Aktives Bild wird eingeblendet und herangezoomt */
+
 .event-img.active {
     opacity: 1;
     transform: scale(1);
     z-index: 2;
 }
 
-/* Responsive: Auf Handys das Sticky-Layout auflösen */
+
 @media (max-width: 1000px) {
     .events-portal { flex-direction: column; }
-    .events-visuals { display: none; } /* Sticky Container verstecken */
-    .event-mobile-img { display: block; } /* Mobile Bilder zeigen */
+    .events-visuals { display: none; } 
+    .event-mobile-img { display: block; } 
     .event-row { flex-direction: column; align-items: flex-start; padding: 30px 0; }
     .event-row:hover { transform: none; }
     .events-list:hover .event-row:not(:hover) { opacity: 1; filter: none; }

@@ -1,6 +1,4 @@
-/* =========================================
-   Kontakt - Interactive Form & Magnetic Button
-   ========================================= */
+
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -21,7 +19,7 @@
 .contact-info-box h2 { font-size: 2.5rem; margin-bottom: 20px; }
 .contact-info-box p { color: var(--color-gray); font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
 
-/* Floating Label Formular */
+
 .modern-form {
     display: flex;
     flex-direction: column;
@@ -33,7 +31,7 @@
     width: 100%;
 }
 
-/* Die Inputs (unsichtbarer Rahmen, nur Linie unten) */
+
 .form-control {
     width: 100%;
     background: transparent;
@@ -43,27 +41,27 @@
     font-size: 1.2rem;
     color: var(--color-text);
     transition: var(--transition-main);
-    resize: none; /* Verhindert hässliches Textarea-Resizen */
+    resize: none; 
 }
 
-/* Der leuchtende Strich beim Anklicken */
+
 .form-control:focus {
     outline: none;
     border-bottom-color: var(--color-accent);
 }
 
-/* Das fliegende Label */
+
 .floating-label {
     position: absolute;
     left: 0;
     top: 10px;
     color: var(--color-gray);
     font-size: 1.2rem;
-    pointer-events: none; /* Klicks gehen durch das Label hindurch */
+    pointer-events: none; 
     transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Die Magie: Wenn fokussiert ODER wenn Text drinsteht (dank placeholder=" ") */
+
 .form-control:focus ~ .floating-label,
 .form-control:not(:placeholder-shown) ~ .floating-label {
     top: -20px;
@@ -74,11 +72,11 @@
     text-transform: uppercase;
 }
 
-/* Magnetic Button Wrapper */
+
 .magnetic-wrap {
     align-self: flex-start;
     display: inline-block;
-    padding: 20px; /* Der Fangbereich für den Magneten */
+    padding: 20px; 
     margin-left: -20px;
     cursor: none;
 }
@@ -100,15 +98,15 @@
     will-change: transform;
 }
 
-/* Erfolgs-Status des Buttons */
+
 .btn-magnetic.success {
-    background: #28a745; /* Grün */
+    background: #28a745; 
     color: #fff;
     pointer-events: none;
 }
 
 @media (max-width: 900px) {
-    #cursor-dot { display: none; } /* Disable custom cursor on mobile */
+    #cursor-dot { display: none; } 
     .contact-grid { grid-template-columns: 1fr; gap: 40px; }
     .contact-info-box { padding: 30px; }
     .magnetic-wrap { cursor: pointer; }

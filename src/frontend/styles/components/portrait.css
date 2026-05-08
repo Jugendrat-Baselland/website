@@ -1,4 +1,4 @@
-/* Künstlerisches Einzel-Portrait */
+
 .artistic-portrait {
     position: relative;
     width: 100%;
@@ -28,7 +28,7 @@
 
 .artistic-portrait:hover img { transform: scale(1.05); }
 
-/* Schwebende Info-Karte auf dem Portrait */
+
 .artistic-overlay {
     position: relative;
     z-index: 2;

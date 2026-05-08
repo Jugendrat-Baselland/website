@@ -1,4 +1,4 @@
-/* Spielerisches Team Grid */
+
 .team-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -10,12 +10,12 @@
     position: relative;
     border-radius: 24px;
     overflow: hidden;
-    aspect-ratio: 3/4; /* Perfektes Portrait-Format */
+    aspect-ratio: 3/4; 
     cursor: auto;
-    background: #000; /* Dunkler Hintergrund für den Reveal-Effekt */
+    background: #000; 
 }
 
-/* Der magische Reveal-Effekt */
+
 .team-member img {
     width: 100%; height: 100%;
     object-fit: cover;
@@ -30,10 +30,10 @@
     transform: scale(1.08);
 }
 
-/* Namensschild, das reinslidet */
+
 .team-info {
     position: absolute;
-    bottom: -80px; /* Versteckt unter dem Rand */
+    bottom: -80px; 
     left: 0;
     width: 100%;
     padding: 40px 20px 20px;
@@ -47,5 +47,5 @@
 .team-info p { color: #ccc; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
 
 .team-member:hover .team-info {
-    bottom: 0; /* Slidet nach oben */
+    bottom: 0; 
 }

@@ -8,7 +8,6 @@ body:
     attributes:
       value: |
         Danke für das Melden dieses Fehlers! Bitte fülle das Formular so vollständig wie möglich aus.
-
   - type: textarea
     id: beschreibung
     attributes:
@@ -17,7 +16,6 @@ body:
       placeholder: Was ist passiert?
     validations:
       required: true
-
   - type: textarea
     id: reproduktion
     attributes:
@@ -30,7 +28,6 @@ body:
         4. Fehler erscheint
     validations:
       required: true
-
   - type: textarea
     id: erwartet
     attributes:
@@ -38,7 +35,6 @@ body:
       description: Was hättest du erwartet, dass passiert?
     validations:
       required: true
-
   - type: textarea
     id: tatsaechlich
     attributes:
@@ -46,13 +42,11 @@ body:
       description: Was ist stattdessen passiert?
     validations:
       required: true
-
   - type: textarea
     id: screenshots
     attributes:
       label: Screenshots / Logs
       description: Falls zutreffend, füge Screenshots oder Log-Ausgaben hinzu.
-
   - type: dropdown
     id: browser
     attributes:
@@ -68,7 +62,6 @@ body:
         - Anderer Browser
     validations:
       required: true
-
   - type: dropdown
     id: os
     attributes:
@@ -80,7 +73,6 @@ body:
         - iOS
         - Android
         - Andere
-
   - type: dropdown
     id: geraet
     attributes:
@@ -90,13 +82,11 @@ body:
         - Desktop
         - Tablet
         - Smartphone
-
   - type: textarea
     id: kontext
     attributes:
       label: Zusätzlicher Kontext
       description: Weitere relevante Informationen zum Problem.
-
   - type: checkboxes
     id: checklist
     attributes:

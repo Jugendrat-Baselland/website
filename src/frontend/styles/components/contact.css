@@ -1,6 +1,4 @@
-/* =========================================
-   Contact Section & Floating Labels
-   ========================================= */
+
 .contact-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -22,10 +20,10 @@
 
 .form-group { position: relative; margin-bottom: 30px; }
 
-/* Das Eingabefeld */
+
 .form-control {
     width: 100%;
-    padding: 24px 20px 10px; /* Platz für das schwebende Label schaffen */
+    padding: 24px 20px 10px; 
     font-size: 1.1rem;
     border: 1px solid var(--glass-border);
     border-radius: 12px;
@@ -43,20 +41,20 @@
 
 textarea.form-control { resize: vertical; min-height: 160px; }
 
-/* Das Label (Startposition) */
+
 .form-label {
     position: absolute;
     top: 18px;
     left: 20px;
     font-size: 1.1rem;
     color: var(--color-gray);
-    pointer-events: none; /* Klicks gehen durch das Label hindurch aufs Feld */
+    pointer-events: none; 
     transition: var(--transition-fast);
     transform-origin: left top;
 }
 
-/* Die Magie: Floating Effect */
-/* Wenn das Feld fokussiert ist ODER der unsichtbare Placeholder NICHT gezeigt wird (weil Text drin steht) */
+
+
 .form-control:focus ~ .form-label,
 .form-control:not(:placeholder-shown) ~ .form-label {
     transform: translateY(-10px) scale(0.75);
@@ -64,7 +62,7 @@ textarea.form-control { resize: vertical; min-height: 160px; }
     font-weight: 600;
 }
 
-/* Submit Button */
+
 .btn-submit {
     display: inline-block;
     width: 100%;
@@ -75,7 +73,7 @@ textarea.form-control { resize: vertical; min-height: 160px; }
     border-radius: 12px;
     font-size: 1.1rem;
     font-weight: 600;
-    cursor: none; /* Custom Cursor */
+    cursor: auto;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     text-align: center;
 }

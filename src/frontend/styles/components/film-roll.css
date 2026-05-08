@@ -1,9 +1,7 @@
-/* =========================================
-   Projekte - Abgeschlossene Projekte (Film Roll)
-   ========================================= */
+
 .film-roll-wrapper {
     position: relative;
-    height: 300vh; /* Macht den Bereich extra lang, damit wir viel Scroll-Weg haben */
+    height: 300vh; 
     margin-top: 100px;
     z-index: 5;
 }
@@ -15,7 +13,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: var(--color-bg); /* Passt sich Dark/Light Mode an */
+    background: var(--color-bg); 
 }
 
 .film-roll-title {
@@ -33,24 +31,24 @@
     gap: 40px;
     padding: 0 5vw;
     will-change: transform;
-    /* Die Breite ergibt sich automatisch aus den Karten */
+    
 }
 
 .film-card {
-    flex: 0 0 400px; /* Feste Breite für jede Karte */
+    flex: 0 0 400px; 
     height: 550px;
     border-radius: 24px;
     position: relative;
     overflow: hidden;
     cursor: auto;
-    filter: grayscale(100%); /* Startet Schwarz-Weiß (Vergangenheit) */
+    filter: grayscale(100%); 
     transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 .film-card:hover {
-    filter: grayscale(0%); /* Wird bunt bei Hover */
-    transform: scale(1.03) rotate(2deg); /* Spielerische Neigung */
+    filter: grayscale(0%); 
+    transform: scale(1.03) rotate(2deg); 
     z-index: 2;
 }
 
@@ -73,7 +71,7 @@
 .film-info h3 { font-size: 1.8rem; margin-bottom: 5px; }
 .film-info p { font-size: 1rem; color: #ccc; }
 
-/* Responsive: Auf Handys schalten wir das auf normales seitliches Wischen (Swipe) um */
+
 @media (max-width: 768px) {
     .film-roll-wrapper { 
         height: auto; 
@@ -84,29 +82,29 @@
     .film-roll-sticky { 
         position: relative; 
         height: auto; 
-        overflow: visible; /* WICHTIG: Hier nicht mehr scrollen! */
-        padding: 100px 0 30px; /* Platz für den Titel oben */
+        overflow: visible; 
+        padding: 100px 0 30px; 
     }
     
     .film-roll-title { 
         position: absolute; 
         top: 0; 
-        left: 20px; /* Bündig mit dem Start der Karten */
+        left: 20px; 
         z-index: 10;
     }
     
     .film-roll-track { 
         transform: none !important; 
         padding: 0 20px; 
-        gap: 20px; /* Sorgt für gleichmäßigen Abstand beim Wischen */
-        /* HIER scrollen wir jetzt: */
+        gap: 20px; 
+        
         display: flex;
         overflow-x: auto; 
         -webkit-overflow-scrolling: touch; 
         scroll-snap-type: x mandatory; 
     }
     
-    /* Optional: Versteckt den hässlichen grauen Scrollbalken auf dem Handy für einen cleaneren Look */
+    
     .film-roll-track::-webkit-scrollbar {
         display: none;
     }
@@ -115,7 +113,7 @@
         flex: 0 0 85vw; 
         height: 450px; 
         filter: grayscale(0%); 
-        scroll-snap-align: center; /* Karten rasten schön in der Mitte ein */
+        scroll-snap-align: center; 
         cursor: auto; 
     }
     

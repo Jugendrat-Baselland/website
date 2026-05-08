@@ -1,6 +1,4 @@
-/* =========================================
-   Image Carousel (Projekte)
-   ========================================= */
+
 .project-carousel {
     position: relative;
     border-radius: 16px;
@@ -10,33 +8,33 @@
     height: 100%;
 }
 
-/* Die scrollbare Spur */
+
 .carousel-track {
     display: flex;
     overflow-x: auto;
-    /* Die CSS-Magie für das Einrasten beim Swipen */
+    
     scroll-snap-type: x mandatory;
-    -ms-overflow-style: none;  /* IE und Edge */
-    scrollbar-width: none;     /* Firefox */
-    touch-action: manipulation;  /* Optimiert Touch-Swipen */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;     
+    touch-action: manipulation;  
 }
 
-/* Versteckt den hässlichen Scrollbalken in Chrome/Safari */
+
 .carousel-track::-webkit-scrollbar {
     display: none;
 }
 
-/* Die einzelnen Bilder */
+
 .carousel-slide {
-    flex: 0 0 100%; /* Jedes Bild nimmt exakt 100% der Breite ein */
+    flex: 0 0 100%; 
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Hier rastet das Bild ein */
+    
     scroll-snap-align: start; 
 }
 
-/* Die Apple-Style Navigations-Pfeile */
+
 .carousel-btn {
     position: absolute;
     top: 50%;
@@ -53,7 +51,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    z-index: 20;  /* über hz-info */
+    z-index: 20;  
     transition: var(--transition-fast);
 }
 
@@ -66,12 +64,12 @@
 .prev-btn { left: 15px; }
 .next-btn { right: 15px; }
 
-/* Mobile Optimierung: Pfeile weg, da man sowieso wischt */
+
 @media (max-width: 900px) {
     .carousel-btn {
         display: none;
     }
     .project-carousel {
-        height: 100%;  /* Konsistent mit hz-item height */
+        height: 100%;  
     }
 }

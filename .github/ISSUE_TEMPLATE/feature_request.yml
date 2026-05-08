@@ -8,7 +8,6 @@ body:
     attributes:
       value: |
         Danke für deinen Vorschlag! Bitte beschreibe deine Idee so detailliert wie möglich.
-
   - type: textarea
     id: problem
     attributes:
@@ -17,7 +16,6 @@ body:
       placeholder: Ich bin immer frustriert, wenn... / Es wäre nützlich, wenn...
     validations:
       required: true
-
   - type: textarea
     id: loesung
     attributes:
@@ -25,13 +23,11 @@ body:
       description: Beschreibe die gewünschte Funktion oder Verbesserung klar und präzise.
     validations:
       required: true
-
   - type: textarea
     id: alternativen
     attributes:
       label: Alternativen
       description: Hast du alternative Lösungsansätze in Betracht gezogen?
-
   - type: dropdown
     id: prioritaet
     attributes:
@@ -43,13 +39,11 @@ body:
         - Hoch – Blockiert mich aktuell
     validations:
       required: true
-
   - type: textarea
     id: kontext
     attributes:
       label: Zusätzlicher Kontext
       description: Screenshots, Mockups, Links zu ähnlichen Projekten oder weitere Informationen.
-
   - type: checkboxes
     id: checklist
     attributes:

@@ -1,15 +1,15 @@
 ## 📝 Beschreibung
 
-<!-- Beschreibe die Änderungen in diesem Pull Request -->
+
 
 ## 🔗 Verknüpfte Issues
 
-<!-- Schließt Issues automatisch beim Merge (z. B. "Closes #42") -->
+
 Closes #
 
 ## 🔄 Art der Änderung
 
-<!-- Kreuze zutreffendes an -->
+
 - [ ] 🐛 Bugfix (nicht-brechende Änderung, behebt ein Problem)
 - [ ] ✨ Neues Feature (nicht-brechende Änderung, fügt Funktionalität hinzu)
 - [ ] 💥 Breaking Change (Fix oder Feature, das bestehende Funktionalität verändert)
@@ -20,7 +20,7 @@ Closes #
 
 ## 🧪 Wie wurde getestet?
 
-<!-- Beschreibe die Tests, die du durchgeführt hast -->
+
 - [ ] Manuell im Browser getestet (Chrome)
 - [ ] Manuell im Browser getestet (Firefox)
 - [ ] Manuell im Browser getestet (Safari)
@@ -33,7 +33,7 @@ Closes #
 
 ## 📸 Screenshots (falls zutreffend)
 
-<!-- Füge Screenshots für UI-Änderungen hinzu -->
+
 
 ## ✅ Checkliste
 

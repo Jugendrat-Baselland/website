@@ -1,6 +1,4 @@
-/* =========================================
-   Team Section - 3D Trading Cards
-   ========================================= */
+
 .team-cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -9,39 +7,39 @@
     margin-top: 40px;
 }
 
-/* Der Container, der die 3D-Perspektive definiert (zwingend nötig!) */
+
 .flip-card-scene {
-    aspect-ratio: 3/4; /* Kartenformat */
-    perspective: 2000px; /* Gibt dem 3D-Raum Tiefe. Kleinerer Wert = extremerer Effekt */
+    aspect-ratio: 3/4; 
+    perspective: 2000px; 
     cursor: auto;
     will-change: transform;
 }
 
-/* Der innere Wrapper, der sich tatsächlich dreht */
+
 .flip-card-inner {
     position: relative;
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); /* Apple-Bezier Kurve */
-    transform-style: preserve-3d; /* Zwingend, damit die Vorder-/Rückseite 3D wirken */
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); 
+    transform-style: preserve-3d; 
     border-radius: 24px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.1);
 }
 
 :root.dark-mode .flip-card-inner { box-shadow: 0 15px 40px rgba(255,255,255,0.05); }
 
-/* Die Magie: Bei Hover dreht sich der innere Wrapper */
+
 .flip-card-scene:hover .flip-card-inner {
     transform: rotateY(180deg);
 }
 
-/* Gemeinsame Stile für Vorder- und Rückseite */
+
 .flip-card-front, .flip-card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Versteckt die Rückseite des Elements */
+    -webkit-backface-visibility: hidden; 
     backface-visibility: hidden;
     border-radius: 24px;
     overflow: hidden;
@@ -49,11 +47,11 @@
     flex-direction: column;
 }
 
-/* --- Vorderseite --- */
+
 .flip-card-front {
-    background: #000; /* Falls Bild nicht lädt */
+    background: #000; 
     color: #fff;
-    z-index: 2; /* Liegt oben auf */
+    z-index: 2; 
 }
 
 .flip-card-front img {
@@ -63,7 +61,7 @@
     transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Sanfter Zoom-In auf der Vorderseite beim Hovern (spieleriisch) */
+
 .flip-card-scene:hover .flip-card-front img { transform: scale(1.05); }
 
 .flip-card-front-info {
@@ -85,20 +83,20 @@
     letter-spacing: 1px; font-size: 0.8rem; font-weight: 600;
 }
 
-/* --- Rückseite --- */
+
 .flip-card-back {
-    background: var(--glass-bg); /* Apple Glas Design */
+    background: var(--glass-bg); 
     backdrop-filter: var(--blur-effect);
     -webkit-backdrop-filter: var(--blur-effect);
     color: var(--color-text);
-    transform: rotateY(180deg); /* Ist initial umgedreht */
-    z-index: 1; /* Liegt hinter der Vorderseite */
+    transform: rotateY(180deg); 
+    z-index: 1; 
     padding: 40px;
     justify-content: space-between;
     border: 1px solid var(--glass-border);
 }
 
-/* Schatten-Simulation auf der Rückseite (Wird dunkler, wenn sie weg-dreht) */
+
 .flip-card-back::after {
     content: '';
     position: absolute; top: 0; left: 0;
@@ -111,9 +109,9 @@
 }
 
 .flip-card-scene:hover .flip-card-back::after { opacity: 0; }
-.flip-card-scene:not(:hover) .flip-card-back::after { opacity: 1; } /* Schatten, wenn umgedreht */
+.flip-card-scene:not(:hover) .flip-card-back::after { opacity: 1; } 
 
-/* Layout auf der Rückseite */
+
 .card-back-header { text-align: left; position: relative; z-index: 1; }
 .card-back-header h3 { font-size: 1.5rem; margin-bottom: 10px; }
 .card-back-meta { color: var(--color-gray); font-size: 0.9rem; line-height: 1.5; }
@@ -130,26 +128,26 @@
 .card-back-action a { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--color-accent); transition: var(--transition-fast); }
 .card-back-action a:hover { text-decoration: underline; }
 
-/* Responsive: Auf Handys das 3D-Hovern deaktivieren und stapeln */
+
 @media (max-width: 900px) {
     .team-cards-grid { 
         grid-template-columns: 1fr; 
         max-width: 500px; 
         margin-left: auto; 
         margin-right: auto; 
-        gap: 50px; /* Etwas mehr Luft zwischen den Profilen */
+        gap: 50px; 
     }
     
     .flip-card-scene { 
         aspect-ratio: auto; 
         height: auto;
-        perspective: none; /* WICHTIG: 3D-Raum komplett abschalten */
+        perspective: none; 
     }
     
     .flip-card-inner { 
         position: relative; 
         transform: none !important; 
-        transform-style: initial !important; /* 'initial' ist hier sicherer als 'flat' */
+        transform-style: initial !important; 
         box-shadow: none; 
         display: flex; 
         flex-direction: column; 
@@ -165,21 +163,20 @@
         -webkit-backface-visibility: visible !important; 
         backface-visibility: visible !important; 
         
-        /* WICHTIG: Verhindert den 0-Pixel-Höhe-Bug im Flexbox-Layout */
+        
         display: block !important; 
     }
 
-    /* Die Vorderseite darf ihr 3/4 Format für das Bild behalten */
+    
     .flip-card-front {
         height: auto !important; 
         aspect-ratio: 3/4;
         border-radius: 16px; 
-        min-height: 350px; /* Sicherheits-Netz für sture Mobile-Browser */
+        min-height: 350px; 
         overflow: hidden;
     }
 
-    /* Das Bild muss auf dem Handy absolute Positionierung nutzen, 
-       damit es das aspect-ratio der .flip-card-front perfekt füllt */
+    
     .flip-card-front img {
         position: absolute;
         top: 0;
@@ -188,7 +185,7 @@
         height: 100%;
     }
     
-    /* Die Rückseite darf auf dem Handy so hoch werden, wie der Text Platz braucht */
+    
     .flip-card-back { 
         height: auto !important;
         aspect-ratio: auto; 

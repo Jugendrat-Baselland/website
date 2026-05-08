@@ -8,26 +8,19 @@
 
 ## Kontext
 
-<!--
-Beschreibe den Kontext und das Problem, das diese Entscheidung nötig macht.
-Welche Anforderungen, Einschränkungen oder Kräfte spielen eine Rolle?
--->
+
 
 [Beschreibe hier die Situation und warum eine Entscheidung getroffen werden muss]
 
 ## Entscheidung
 
-<!--
-Beschreibe die getroffene Entscheidung in einem klaren Satz.
--->
+
 
 Wir haben uns entschieden: **[Entscheidung]**
 
 ## Begründung
 
-<!--
-Warum wurde diese Entscheidung getroffen? Welche Faktoren waren ausschlaggebend?
--->
+
 
 - [Grund 1]
 - [Grund 2]
@@ -35,10 +28,7 @@ Warum wurde diese Entscheidung getroffen? Welche Faktoren waren ausschlaggebend?
 
 ## Abgewogene Alternativen
 
-<!--
-Welche anderen Optionen wurden in Betracht gezogen?
-Warum wurden sie verworfen?
--->
+
 
 ### Alternative 1: [Name]
 
@@ -60,10 +50,7 @@ Warum wurden sie verworfen?
 
 ## Konsequenzen
 
-<!--
-Welche positiven und negativen Konsequenzen hat diese Entscheidung?
-Was wird einfacher, was wird schwieriger?
--->
+
 
 **Positiv:**
 - [Konsequenz 1]
