@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <link rel="icon" href="../assets/logos/Baselland.svg" type="image/svg+xml">
-    <link rel="icon" href="../assets/logos/Baselland.png" type="image/png" sizes="32x32"> 
+    <link rel="icon" href="../assets/logos/Baselland.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="../assets/logos/Baselland.svg">
 
     <meta charset="UTF-8">
@@ -12,25 +13,29 @@
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/layout.css">
     <link rel="stylesheet" href="../styles/components.css">
-    
+
     <script src="../scripts/utils/theme.js"></script>
     <script src="../scripts/utils/loader.js"></script>
+    <script src="../scripts/utils/error-handler.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 </head>
+
 <body>
     <div id="loader"><img src="../assets/logos/bl-logo.png" alt="loading..." class="loader-logo">
         <div class="loader-bar">
             <div class="loader-progress"></div>
-    </div></div>
+        </div>
+    </div>
 
-    <header>
+    <header id="siteheader">
         <div class="logo">
-            <a href="../../../index.html"><img src="../assets/logos/bl-logo.png" alt= "Jugendrat Baselland" class="header-logo">
+            <a href="../../../index.html"><img src="../assets/logos/bl-logo.png" alt="Jugendrat Baselland"
+                    class="header-logo">
             </a>
         </div>
-        
+
         <div class="nav-container">
             <nav>
                 <ul>
@@ -41,29 +46,54 @@
                     <li><a href="kontakt.html">Kontakt</a></li>
                 </ul>
             </nav>
-            <button id="theme-toggle">⚙️</button>
+            <button id="theme-toggle">Modus</button>
         </div>
+
+        <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
     </header>
+
+    <nav class="nav-mobile-overlay" id="mobileNav" aria-label="Mobile Navigation" aria-hidden="true">
+        <ul>
+            <li><a href="ueber-uns.html" style="color: var(--color-text);">Über uns</a></li>
+            <li><a href="projekte.html">Projekte</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+
+        <button class="theme-toggle-mobile" id="theme-toggle-mobile"></button>
+    </nav>
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true">Modus</div>
+
 
     <main>
         <section class="hero reveal" style="height: 60vh;">
             <h1>Weshalb der Jugendrat Baselland?</h1>
-            <p>Der Jugendrat Baselland ist ein unabhängiges Gremium, das sich für die Rechte und Interessen von Jugendlichen in der Region einsetzt.</p>
+            <p>Der Jugendrat Baselland ist ein unabhängiges Gremium, das sich für die Rechte und Interessen von
+                Jugendlichen in der Region einsetzt.</p>
         </section>
 
         <div class="marquee-container reveal">
             <div class="marquee-text">
-                Politische Mitbestimmung für Jugendliche in Baselland. &nbsp;|&nbsp; Engagiere dich mit uns für eine bessere Zukunft! &nbsp;|&nbsp; Gemeinsam gestalten wir die Politik von morgen! &nbsp;|&nbsp; Politische Mitbestimmung für Jugendliche in Baselland. &nbsp;|&nbsp; Engagiere dich mit uns für eine bessere Zukunft! &nbsp;|&nbsp; Gemeinsam gestalten wir die Politik von morgen!
+                Politische Mitbestimmung für Jugendliche in Baselland. &nbsp;|&nbsp; Engagiere dich mit uns für eine
+                bessere Zukunft! &nbsp;|&nbsp; Gemeinsam gestalten wir die Politik von morgen! &nbsp;|&nbsp; Politische
+                Mitbestimmung für Jugendliche in Baselland. &nbsp;|&nbsp; Engagiere dich mit uns für eine bessere
+                Zukunft! &nbsp;|&nbsp; Gemeinsam gestalten wir die Politik von morgen!
             </div>
         </div>
 
         <section class="reveal" style="padding-top: 0;">
             <div class="artistic-portrait">
                 <img src="https://picsum.photos/seed/ceo/1920/1080" alt="Großes Portrait">
-                
+
                 <div class="artistic-overlay">
                     <h3 style="font-size: 2rem; margin-bottom: 10px;">since 1998</h3>
-                    <p style="color: var(--color-gray);">Wir sind ein engagiertes Team, das sich für die Rechte und Interessen von Jugendlichen in Baselland einsetzt.</p>
+                    <p style="color: var(--color-gray);">Wir sind ein engagiertes Team, das sich für die Rechte und
+                        Interessen von Jugendlichen in Baselland einsetzt.</p>
                 </div>
             </div>
         </section>
@@ -71,7 +101,7 @@
         <section class="reveal">
             <h2 class="section-title">Unsere Aufgaben</h2>
             <div class="team-grid">
-                
+
                 <div class="team-member delay-1">
                     <img src="https://picsum.photos/seed/team1/800/1000" alt="Team 1">
                     <div class="team-info">
@@ -111,19 +141,26 @@
                     <h3>Unsere Community</h3>
                     <p>Komm auf unseren Discord-Server und tausch dich aus!</p>
                 </div>
-    
-                 <iframe src="https://discord.com/widget?id=1486781999829094441&theme=dark" width="100%" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius: 12px;"></iframe>
+
+                <iframe src="https://discord.com/widget?id=1486781999829094441&theme=dark" width="100%" height="500"
+                    allowtransparency="true" frameborder="0"
+                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                    style="border-radius: 12px;"></iframe>
             </div>
 
             <div class="social-glass-card">
                 <div class="card-header">
                     <h3>Hör mal rein</h3>
                     <p>Unser aktueller Soundtrack auf Spotify</p>
+                </div>
+
+                <iframe data-testid="embed-iframe" style="border-radius:12px"
+                    src="https://open.spotify.com/embed/show/69PE7zUjP6QQ5z52iBYUhh?utm_source=generator&t=0"
+                    width="100%" height="152" frameBorder="0" allowfullscreen=""
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"></iframe>
             </div>
-    
-                <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/show/69PE7zUjP6QQ5z52iBYUhh?utm_source=generator&t=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            </div>
-            
+
         </section>
     </main>
 
@@ -162,4 +199,5 @@
     <script src="../scripts/services/data.js" defer></script>
     <script src="../scripts/app.js" defer></script>
 </body>
+
 </html>

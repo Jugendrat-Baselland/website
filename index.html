@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <link rel="icon" href="src/frontend/assets/logos/Baselland.svg" type="image/svg+xml">
-    <link rel="icon" href="src/frontend/assets/logos/Baselland.png" type="image/png" sizes="32x32"> 
+    <link rel="icon" href="src/frontend/assets/logos/Baselland.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="src/frontend/assets/logos/Baselland.svg">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jugendrat Baselland</title>
-    
+
     <link rel="stylesheet" href="src/frontend/styles/base.css">
     <link rel="stylesheet" href="src/frontend/styles/layout.css">
     <link rel="stylesheet" href="src/frontend/styles/components.css">
 
     <script src="src/frontend/scripts/utils/theme.js"></script>
     <script src="src/frontend/scripts/utils/loader.js"></script>
+    <script src="src/frontend/scripts/utils/error-handler.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
 </head>
+
 <body>
     <div id="loader"><img src="src/frontend/assets/logos/bl-logo.png" alt="loading..." class="loader-logo">
         <div class="loader-bar">
             <div class="loader-progress"></div>
-    </div></div>
+        </div>
+    </div>
 
-    <header>
+    <header id="siteheader">
         <div class="logo">
-            <a href="index.html"><img src="src/frontend/assets/logos/bl-logo.png" alt= "Jugendrat Baselland" class="header-logo">
+            <a href="index.html"><img src="src/frontend/assets/logos/bl-logo.png" alt="Jugendrat Baselland"
+                    class="header-logo">
             </a>
         </div>
-        
+
         <div class="nav-container">
             <nav>
                 <ul>
@@ -41,28 +46,50 @@
                     <li><a href="src/frontend/pages/kontakt.html">Kontakt</a></li>
                 </ul>
             </nav>
-            <button id="theme-toggle">⚙️</button>
+            <button id="theme-toggle">Modus</button>
         </div>
+
+        <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+            <span class="burger-line"></span>
+        </button>
     </header>
+
+    <nav class="nav-mobile-overlay" id="mobileNav" aria-label="Mobile Navigation" aria-hidden="true">
+        <ul>
+            <li><a href="src/frontend/pages/ueber-uns.html">Über uns</a></li>
+            <li><a href="src/frontend/pages/projekte.html">Projekte</a></li>
+            <li><a href="src/frontend/pages/events.html">Events</a></li>
+            <li><a href="src/frontend/pages/team.html">Team</a></li>
+            <li><a href="src/frontend/pages/kontakt.html">Kontakt</a></li>
+        </ul>
+
+        <button class="theme-toggle-mobile" id="theme-toggle-mobile"></button>
+    </nav>
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true">Modus</div>
+
 
     <main>
         <section class="hero reveal" style="height: 70vh; justify-content: center; text-align: center;">
             <h1 style="font-size: clamp(3rem, 8vw, 6rem); letter-spacing: -2px;">Deine Stimme.<br>Deine Zukunft.</h1>
             <p style="font-size: 1.2rem; max-width: 600px; margin: 20px auto 40px;">
-                Wir sind der Jugendrat. Wir setzen uns für deine Ideen ein und machen unsere Gemeinde zu einem besseren Ort für junge Menschen.
+                Wir sind der Jugendrat. Wir setzen uns für deine Ideen ein und machen unsere Gemeinde zu einem besseren
+                Ort für junge Menschen.
             </p>
-            <a href="src/frontend/pages/ueber-uns.html" class="btn-beam" style="text-decoration: none;">Lerne uns kennen</a>
+            <a href="src/frontend/pages/ueber-uns.html" class="btn-beam" style="text-decoration: none;">Lerne uns
+                kennen</a>
         </section>
 
         <section class="reveal">
             <h2 class="section-title">Aktuelle Highlights</h2>
-            
+
             <div id="bento-grid-container" class="bento-grid"></div>
-            
+
         </section>
     </main>
 
-   <footer>
+    <footer>
         <div class="footer-content">
             <p>Copyright © 2026 Jugendrat Baselland</p>
             <div class="footer-links">
@@ -97,4 +124,5 @@
     <script src="src/frontend/scripts/services/data.js" defer></script>
     <script src="src/frontend/scripts/app.js" defer></script>
 </body>
+
 </html>
