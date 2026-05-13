@@ -7,13 +7,12 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 – Seite nicht gefunden</title>
+    <title>Error 404</title>
 
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/layout.css">
     <link rel="stylesheet" href="../styles/components.css">
 
-    <!-- Utils: theme & loader zuerst, dann error-handler (kein defer – muss sofort aktiv sein) -->
     <script src="../scripts/utils/theme.js"></script>
     <script src="../scripts/utils/loader.js"></script>
     <script src="../scripts/utils/error-handler.js"></script>
@@ -24,12 +23,12 @@
 
     <header>
         <div class="logo">
-            <!-- FIX: war "../../../index.html" (3 Ebenen zu hoch) -->
-            <a href="../index.html">
+            <!-- FIX: 404.html liegt in /src/frontend/pages/ – Startseite ist drei Ebenen höher. -->
+            <a href="../../../index.html">
                 <img src="../assets/logos/bl-logo.png" alt="Jugendrat Baselland" class="header-logo">
             </a>
         </div>
-        <button id="theme-toggle">Modus</button>
+        <button id="theme-toggle" type="button">Modus</button>
     </header>
 
     <main class="error-main">
@@ -39,15 +38,13 @@
                 <div class="error-front" aria-hidden="false">
                     <h1 class="giant-404">404</h1>
                     <p class="error-subtitle">Seite konnte nicht gefunden werden.</p>
-                    <!-- Hinweis nur auf Desktop sichtbar -->
                     <span class="error-hover-hint" aria-hidden="true">Hover für mehr Info</span>
                 </div>
 
                 <div class="error-back" aria-hidden="true">
                     <h2>Hoppela!</h2>
                     <p>Du hast unsere Welt umgedreht!<br>Wir schicken dich zurück.</p>
-                    <!-- FIX: war "../../../index.html" -->
-                    <a href="../index.html" class="btn-beam">Zurück zur Startseite</a>
+                    <a href="../../../index.html" class="btn-beam">Zurück zur Startseite</a>
                 </div>
 
             </div>
@@ -65,22 +62,22 @@
         </div>
 
         <div class="social-media-icons">
-            <a href="https://whatsapp.com" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                 <i class="fab fa-whatsapp"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <i class="fab fa-tiktok"></i>
             </a>
-            <a href="https://spotify.com" target="_blank" rel="noopener" aria-label="Spotify">
+            <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" aria-label="Spotify">
                 <i class="fab fa-spotify"></i>
             </a>
-            <a href="https://discord.com" target="_blank" rel="noopener" aria-label="Discord">
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                 <i class="fab fa-discord"></i>
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <i class="fab fa-github"></i>
             </a>
         </div>
@@ -89,22 +86,23 @@
     <!-- Mobile Tap-to-Flip (Hover funktioniert auf Touch-Geräten nicht) -->
     <script>
       (function () {
-        var scene = document.getElementById('errorScene');
-        var world = document.getElementById('errorWorld');
+        'use strict';
+        const scene = document.getElementById('errorScene');
+        const world = document.getElementById('errorWorld');
         if (!scene || !world) return;
 
-        // Nur auf Touch-Geräten aktiv
-        var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
         if (!isTouchDevice) return;
 
-        var flipped = false;
-        scene.addEventListener('click', function () {
-          flipped = !flipped;
-          world.classList.toggle('is-flipped', flipped);
+        let flipped = false;
+        scene.addEventListener('click', () => {
+            flipped = !flipped;
+            world.classList.toggle('is-flipped', flipped);
 
-          // Screenreader informieren
-          scene.querySelector('.error-front').setAttribute('aria-hidden', flipped);
-          scene.querySelector('.error-back').setAttribute('aria-hidden', !flipped);
+            const front = scene.querySelector('.error-front');
+            const back  = scene.querySelector('.error-back');
+            if (front) front.setAttribute('aria-hidden', String(flipped));
+            if (back)  back.setAttribute('aria-hidden', String(!flipped));
         });
       })();
     </script>

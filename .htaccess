@@ -1,0 +1,53 @@
+# =====================================================================
+# .htaccess – Jugendrat Baselland (Apache 2.4+)
+# ---------------------------------------------------------------------
+# Diese Datei ist OPTIONAL. Sie greift nur, wenn die Seite auf einem
+# Apache-Webserver mit aktivem AllowOverride deployed wird. Auf
+# Nginx/Netlify/GitHub Pages bitte die jeweilige Plattform-Konfiguration
+# verwenden, um die gleichen Effekte zu erzielen.
+# =====================================================================
+
+# ─── 1. Fehlerseiten ─────────────────────────────────────────────────
+ErrorDocument 404 /src/frontend/pages/404.html
+ErrorDocument 403 /src/frontend/pages/404.html
+
+# ─── 2. UTF-8 als Default ────────────────────────────────────────────
+AddDefaultCharset UTF-8
+
+# ─── 3. Sicherheits-Header (best practice) ───────────────────────────
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ─── 4. Caching für statische Assets ─────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Bilder
+    ExpiresByType image/jpeg                "access plus 1 month"
+    ExpiresByType image/png                 "access plus 1 month"
+    ExpiresByType image/svg+xml             "access plus 1 month"
+    ExpiresByType image/webp                "access plus 1 month"
+
+    # Stylesheets & Skripte
+    ExpiresByType text/css                  "access plus 1 week"
+    ExpiresByType application/javascript    "access plus 1 week"
+
+    # Schriftarten
+    ExpiresByType font/woff                 "access plus 1 month"
+    ExpiresByType font/woff2                "access plus 1 month"
+
+    # HTML: nicht cachen, damit Inhalts-Updates sofort sichtbar werden
+    ExpiresByType text/html                 "access plus 0 seconds"
+</IfModule>
+
+# ─── 5. Kompression ──────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# ─── 6. Verzeichnis-Listing verbieten ────────────────────────────────
+Options -Indexes

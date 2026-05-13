@@ -8,7 +8,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kontakt - Jugendrat Baselland</title>
+    <title>Jugendrat Baselland</title>
 
     <link rel="stylesheet" href="../styles/base.css">
     <link rel="stylesheet" href="../styles/layout.css">
@@ -46,10 +46,10 @@
                     <li><a href="kontakt.html" style="color: var(--color-text);">Kontakt</a></li>
                 </ul>
             </nav>
-            <button id="theme-toggle">Modus</button>
+            <button id="theme-toggle" type="button">Modus</button>
         </div>
 
-        <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+        <button class="burger" id="burgerBtn" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
             <span class="burger-line"></span>
             <span class="burger-line"></span>
             <span class="burger-line"></span>
@@ -65,9 +65,9 @@
             <li><a href="kontakt.html" style="color: var(--color-text);">Kontakt</a></li>
         </ul>
 
-        <button class="theme-toggle-mobile" id="theme-toggle-mobile"></button>
+        <button class="theme-toggle-mobile" id="theme-toggle-mobile" type="button"></button>
     </nav>
-    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true">Modus</div>
+    <div class="nav-backdrop" id="navBackdrop" aria-hidden="true"></div>
 
 
     <main>
@@ -95,20 +95,23 @@
                 </div>
 
                 <div class="contact-form-box delay-2">
-                    <form id="interactive-contact-form" class="modern-form">
+                    <form id="interactive-contact-form" class="modern-form" novalidate>
 
                         <div class="form-group">
-                            <input type="text" id="name" class="form-control" placeholder=" " required>
+                            <input type="text" id="name" name="name" class="form-control"
+                                   placeholder=" " required maxlength="100" autocomplete="name">
                             <label for="name" class="floating-label">Name</label>
                         </div>
 
                         <div class="form-group">
-                            <input type="email" id="email" class="form-control" placeholder=" " required>
+                            <input type="email" id="email" name="email" class="form-control"
+                                   placeholder=" " required maxlength="254" autocomplete="email">
                             <label for="email" class="floating-label">E-Mail</label>
                         </div>
 
                         <div class="form-group">
-                            <textarea id="message" class="form-control" rows="4" placeholder=" " required></textarea>
+                            <textarea id="message" name="message" class="form-control" rows="4"
+                                      placeholder=" " required maxlength="5000"></textarea>
                             <label for="message" class="floating-label">Nachricht</label>
                         </div>
 
@@ -136,22 +139,22 @@
         </div>
 
         <div class="social-media-icons">
-            <a href="https://whatsapp.com" target="_blank" aria-label="WhatsApp">
+            <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
                 <i class="fab fa-whatsapp"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://tiktok.com" target="_blank" aria-label="TikTok">
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <i class="fab fa-tiktok"></i>
             </a>
-            <a href="https://spotify.com" target="_blank" aria-label="Spotify">
+            <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" aria-label="Spotify">
                 <i class="fab fa-spotify"></i>
             </a>
-            <a href="https://discord.com" target="_blank" aria-label="Discord">
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" aria-label="Discord">
                 <i class="fab fa-discord"></i>
             </a>
-            <a href="https://github.com" target="_blank" aria-label="GitHub">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <i class="fab fa-github"></i>
             </a>
         </div>

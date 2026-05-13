@@ -1,9 +1,24 @@
-/*APP.JS - INTERACTIVE ENGINE (Logik)*/
+/* =====================================================================
+ * app.js – Interactive Engine (Jugendrat Baselland)
+ * ---------------------------------------------------------------------
+ * Verantwortlichkeiten:
+ *   1. Burger-Menü / Mobile-Navigation
+ *   2. Scroll-Reveal-Animationen
+ *   3. Header automatisch beim Scrollen verstecken
+ *   4. Apple-Style Horizontal-Scroll (Projekte)
+ *   5. Dynamische Generatoren (Events, Bento, Team, Projekte, Film-Roll)
+ *   6. Magnetische Buttons (Desktop)
+ *   7. Kontaktformular-Submit (mit fetch zur PHP-API)
+ * ===================================================================== */
 
-//HTML Escape Utility (XSS Prevention)
-function escapeHTML(str) {
-    if (typeof str !== 'string') return '';
-    return str
+'use strict';
+
+/* ---------- Hilfsfunktionen ------------------------------------------ */
+
+/** XSS-sichere HTML-Escape-Funktion (für dynamisch generiertes Markup). */
+function escapeHTML(value) {
+    if (value === null || value === undefined) return '';
+    return String(value)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
@@ -11,56 +26,68 @@ function escapeHTML(str) {
         .replace(/'/g, '&#039;');
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Drosselung per requestAnimationFrame: stellt sicher, dass eine Callback
+ * höchstens einmal pro Frame ausgeführt wird.
+ */
+function rafThrottle(fn) {
+    let ticking = false;
+    return function throttled(...args) {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            fn.apply(this, args);
+            ticking = false;
+        });
+    };
+}
 
-    //Mobile / Touch Detection
+document.addEventListener('DOMContentLoaded', () => {
+
+    /* Touch- / Mobile-Erkennung */
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     const isMobile = () => window.innerWidth <= 900;
 
-    // ─────────────────────────────────────────────────────────────
-    // BURGER NAVIGATION
-    // ─────────────────────────────────────────────────────────────
-    const burger      = document.getElementById('burgerBtn');
-    const mobileNav   = document.getElementById('mobileNav');
-    const backdrop    = document.getElementById('navBackdrop');
-    const siteHeader  = document.getElementById('siteHeader');
+    /* =================================================================
+     * 1. BURGER-NAVIGATION
+     * ================================================================= */
+    const burger     = document.getElementById('burgerBtn');
+    const mobileNav  = document.getElementById('mobileNav');
+    const backdrop   = document.getElementById('navBackdrop');
+    const siteHeader = document.getElementById('siteheader'); // FIX: HTML-ID ist klein geschrieben
 
     if (burger && mobileNav) {
 
-        // Overlay-Top dynamisch an Header-Höhe anpassen
-        function updateOverlayTop() {
+        const updateOverlayTop = () => {
             const headerH = siteHeader ? siteHeader.offsetHeight : 110;
-            mobileNav.style.top = headerH + 'px';
-        }
+            mobileNav.style.top = `${headerH}px`;
+        };
         updateOverlayTop();
 
-        function openMenu() {
+        const openMenu = () => {
             burger.classList.add('is-open');
             mobileNav.classList.add('is-open');
             if (backdrop) backdrop.classList.add('is-visible');
             burger.setAttribute('aria-expanded', 'true');
             mobileNav.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
-        }
+        };
 
-        function closeMenu() {
+        const closeMenu = () => {
             burger.classList.remove('is-open');
             mobileNav.classList.remove('is-open');
             if (backdrop) backdrop.classList.remove('is-visible');
             burger.setAttribute('aria-expanded', 'false');
             mobileNav.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
-        }
+        };
 
-        // Burger klicken → togglen
         burger.addEventListener('click', () => {
             burger.classList.contains('is-open') ? closeMenu() : openMenu();
         });
 
-        // Klick auf Backdrop → schließen
         if (backdrop) backdrop.addEventListener('click', closeMenu);
 
-        // Escape-Taste → schließen
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && burger.classList.contains('is-open')) {
                 closeMenu();
@@ -68,235 +95,212 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Link-Klick im Overlay → Menü schließen
-        mobileNav.querySelectorAll('a').forEach(link => {
+        mobileNav.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', closeMenu);
         });
 
-        // Theme-Toggle Mobile → delegiert an Desktop-Button (Logik bleibt in theme.js)
-        const desktopThemeBtn = document.getElementById('theme-toggle');
-        const mobileThemeBtn  = document.getElementById('theme-toggle-mobile');
-        if (mobileThemeBtn && desktopThemeBtn) {
-            mobileThemeBtn.addEventListener('click', () => desktopThemeBtn.click());
-        }
+        /* Menü schließen beim Scrollen nach unten */
+        let lastScrollY = 0;
+        window.addEventListener('scroll', rafThrottle(() => {
+            const currentY = window.scrollY;
+            if (currentY > lastScrollY && burger.classList.contains('is-open')) {
+                closeMenu();
+            }
+            lastScrollY = currentY;
+        }), { passive: true });
 
-        // Resize: Overlay-Top aktualisieren + Menü bei Desktop schließen
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', rafThrottle(() => {
             updateOverlayTop();
             if (!isMobile()) closeMenu();
-        });
+        }));
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // SCROLL REVEAL OBSERVER
-    // ─────────────────────────────────────────────────────────────
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -10% 0px',
-        threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
+    /* =================================================================
+     * 2. SCROLL-REVEAL OBSERVER
+     * ================================================================= */
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0 });
 
-    document.querySelectorAll('.reveal').forEach(el => {
-        observer.observe(el);
-    });
+    document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
-    // ─────────────────────────────────────────────────────────────
-    // HIDE HEADER ON SCROLL
-    // ─────────────────────────────────────────────────────────────
-    const header = document.querySelector("header");
-    let lastScrollY = window.scrollY;
-
+    /* =================================================================
+     * 3. HEADER BEIM SCROLLEN VERSTECKEN
+     * ================================================================= */
+    const header = document.querySelector('header');
     if (header) {
-        window.addEventListener("scroll", () => {
-            const currentScrollY = window.scrollY;
-            if (currentScrollY <= 0) {
-                header.classList.remove("header-hidden");
-                lastScrollY = currentScrollY;
-                return;
+        let lastScrollY = window.scrollY;
+
+        const onHeaderScroll = rafThrottle(() => {
+            const currentY = window.scrollY;
+
+            if (currentY <= 0) {
+                header.classList.remove('header-hidden');
+            } else if (currentY > lastScrollY && currentY > 100) {
+                header.classList.add('header-hidden');
+            } else if (currentY < lastScrollY) {
+                header.classList.remove('header-hidden');
             }
-            if (currentScrollY > lastScrollY && currentScrollY > 100) {
-                header.classList.add("header-hidden");
-            } else {
-                header.classList.remove("header-hidden");
-            }
-            lastScrollY = currentScrollY;
+            lastScrollY = currentY;
         });
+
+        window.addEventListener('scroll', onHeaderScroll, { passive: true });
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // APPLE-STYLE HORIZONTAL SCROLL LOGIC
-    // ─────────────────────────────────────────────────────────────
+    /* =================================================================
+     * 4. APPLE-STYLE HORIZONTAL SCROLL (Projekte-Seite)
+     * ================================================================= */
     const hzWrapper = document.getElementById('hz-wrapper');
     const hzTrack   = document.getElementById('hz-track');
 
     if (hzWrapper && hzTrack) {
-        window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 900) {
-                hzTrack.style.transform = `translateX(0px)`;
+        const onHzScroll = rafThrottle(() => {
+            if (isMobile()) {
+                hzTrack.style.transform = 'translateX(0px)';
                 return;
             }
 
             const rect = hzWrapper.getBoundingClientRect();
-            const scrollProgress = -rect.top / (rect.height - window.innerHeight);
-            const clampedProgress = Math.max(0, Math.min(scrollProgress, 1));
-            const maxScroll = hzTrack.scrollWidth - window.innerWidth + (window.innerWidth * 0.1);
+            const scrollable = rect.height - window.innerHeight;
+            if (scrollable <= 0) return;
 
-            hzTrack.style.transform = `translateX(-${clampedProgress * maxScroll}px)`;
+            const progress = Math.max(0, Math.min(-rect.top / scrollable, 1));
+            const maxScroll = hzTrack.scrollWidth - window.innerWidth + (window.innerWidth * 0.1);
+            hzTrack.style.transform = `translateX(-${progress * maxScroll}px)`;
         });
+
+        window.addEventListener('scroll', onHzScroll, { passive: true });
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // AUTOMATISCHER EVENTS-GENERATOR
-    // ─────────────────────────────────────────────────────────────
-    const eventsData             = window.eventsData;
+    /* =================================================================
+     * 5. AUTOMATISCHE EVENTS-GENERIERUNG (Events-Seite)
+     * ================================================================= */
+    const eventsData             = Array.isArray(window.eventsData) ? window.eventsData : null;
     const eventsListContainer    = document.getElementById('events-list-container');
     const eventsVisualsContainer = document.getElementById('events-visuals-container');
 
-    if (eventsListContainer && eventsVisualsContainer && eventsData) {
-        let listHtml    = '';
-        let visualsHtml = '';
+    if (eventsData && eventsListContainer && eventsVisualsContainer) {
+        const listParts    = [];
+        const visualsParts = [];
 
         eventsData.forEach((event, index) => {
-            const safeId          = escapeHTML(event.id);
-            const safeDate        = escapeHTML(event.date);
-            const safeTitle       = escapeHTML(event.title);
-            const safeDesc        = escapeHTML(event.description);
-            const safeImgDesktop  = escapeHTML(event.imageDesktop);
-            const safeImgMobile   = escapeHTML(event.imageMobile);
-            const activeClass     = index === 0 ? 'active' : '';
+            const id           = escapeHTML(event.id);
+            const date         = escapeHTML(event.date);
+            const title        = escapeHTML(event.title);
+            const description  = escapeHTML(event.description);
+            const imgDesktop   = escapeHTML(event.imageDesktop);
+            const imgMobile    = escapeHTML(event.imageMobile);
+            const activeClass  = index === 0 ? 'active' : '';
 
-            listHtml += `
-                <div class="event-row" data-target="${safeId}">
-                    <div class="event-date">${safeDate}</div>
+            listParts.push(`
+                <div class="event-row" data-target="${id}">
+                    <div class="event-date">${date}</div>
                     <div class="event-info">
-                        <h3>${safeTitle}</h3>
-                        <p>${safeDesc}</p>
-                        <img src="${safeImgMobile}" class="event-mobile-img" alt="Mobile ${safeTitle}">
+                        <h3>${title}</h3>
+                        <p>${description}</p>
+                        <img src="${imgMobile}" class="event-mobile-img" alt="Mobile ${title}" loading="lazy">
                     </div>
                 </div>
-            `;
+            `);
 
-            visualsHtml += `
-                <img src="${safeImgDesktop}" id="${safeId}" class="event-img ${activeClass}" alt="${safeTitle}">
-            `;
+            visualsParts.push(
+                `<img src="${imgDesktop}" id="${id}" class="event-img ${activeClass}" alt="${title}" loading="lazy">`
+            );
         });
 
-        eventsListContainer.innerHTML    = listHtml;
-        eventsVisualsContainer.innerHTML = visualsHtml;
+        eventsListContainer.innerHTML    = listParts.join('');
+        eventsVisualsContainer.innerHTML = visualsParts.join('');
 
-        // Hover-Effekt erst nach DOM-Generierung binden
-        const eventRows   = document.querySelectorAll('.event-row');
-        const eventImages = document.querySelectorAll('.event-img');
-
-        eventRows.forEach(row => {
+        const eventImages = eventsVisualsContainer.querySelectorAll('.event-img');
+        eventsListContainer.querySelectorAll('.event-row').forEach((row) => {
             row.addEventListener('mouseenter', () => {
                 const targetId = row.getAttribute('data-target');
-                eventImages.forEach(img => img.classList.remove('active'));
-                const targetImg = document.getElementById(targetId);
+                eventImages.forEach((img) => img.classList.remove('active'));
+                const targetImg = targetId ? document.getElementById(targetId) : null;
                 if (targetImg) targetImg.classList.add('active');
             });
         });
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // AUTOMATISCHER BENTO-GENERATOR
-    // ─────────────────────────────────────────────────────────────
-    const bentoProjects  = window.bentoProjects;
+    /* =================================================================
+     * 6. AUTOMATISCHE BENTO-GENERIERUNG (Startseite)
+     * ================================================================= */
+    const bentoProjects  = Array.isArray(window.bentoProjects) ? window.bentoProjects : null;
     const bentoContainer = document.getElementById('bento-grid-container');
 
     if (bentoContainer && bentoProjects) {
-        let bentoHtml = '';
-
-        bentoProjects.forEach((item, index) => {
+        const bentoHtml = bentoProjects.map((item, index) => {
             const delayClass = `delay-${(index % 3) + 1}`;
-            const safeLink   = escapeHTML(item.link);
-            const safeImage  = escapeHTML(item.image);
-            const safeTitle  = escapeHTML(item.title);
-            const safeTag    = escapeHTML(item.tag);
-            const safeDesc   = escapeHTML(item.description);
-
-            bentoHtml += `
-                <a href="${safeLink}" class="bento-item ${delayClass}">
-                    <img src="${safeImage}" alt="${safeTitle}" class="bento-img">
+            return `
+                <a href="${escapeHTML(item.link)}" class="bento-item ${delayClass}">
+                    <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="bento-img" loading="lazy">
                     <div class="bento-content">
-                        <span class="bento-tag">${safeTag}</span>
-                        <h3>${safeTitle}</h3>
-                        <p>${safeDesc}</p>
+                        <span class="bento-tag">${escapeHTML(item.tag)}</span>
+                        <h3>${escapeHTML(item.title)}</h3>
+                        <p>${escapeHTML(item.description)}</p>
                     </div>
                 </a>
             `;
-        });
+        }).join('');
 
         bentoContainer.innerHTML = bentoHtml;
-        updateCursorHoverElements();
+        // FIX: updateCursorHoverElements() existiert nicht → Aufruf entfernt.
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // AUTOMATISCHER KARTEN-GENERATOR
-    // ─────────────────────────────────────────────────────────────
-    const teamMembers  = window.teamMembers;
+    /* =================================================================
+     * 7. AUTOMATISCHE TEAM-GENERIERUNG (Team-Seite)
+     * ================================================================= */
+    const teamMembers   = Array.isArray(window.teamMembers) ? window.teamMembers : null;
     const teamContainer = document.getElementById('team-grid-container');
 
     if (teamContainer && teamMembers) {
-        let htmlContent = '';
+        const teamHtml = teamMembers.map((member, index) => {
+            const delayClass = `delay-${(index % 3) + 1}`;
+            const name       = escapeHTML(member.name);
+            const image      = escapeHTML(member.image);
+            const roleFront  = escapeHTML(member.roleFront);
+            const roleBack   = escapeHTML(member.roleBack);
+            const age        = escapeHTML(member.age);
+            const quote      = escapeHTML(member.quote);
+            const instagram  = escapeHTML(member.instagram);
 
-        teamMembers.forEach((member, index) => {
-            const delayClass     = `delay-${(index % 3) + 1}`;
-            const safeName       = escapeHTML(member.name);
-            const safeImage      = escapeHTML(member.image);
-            const safeRoleFront  = escapeHTML(member.roleFront);
-            const safeRoleBack   = escapeHTML(member.roleBack);
-            const safeAge        = escapeHTML(member.age);
-            const safeQuote      = escapeHTML(member.quote);
-            const safeInstagram  = escapeHTML(member.instagram);
-
-            htmlContent += `
+            return `
                 <div class="flip-card-scene reveal ${delayClass}">
                     <div class="flip-card-inner">
-
                         <div class="flip-card-front">
-                            <img src="${safeImage}" alt="${safeName}">
+                            <img src="${image}" alt="${name}" loading="lazy">
                             <div class="flip-card-front-info">
-                                <h3>${safeName}</h3>
-                                <p>${safeRoleFront}</p>
+                                <h3>${name}</h3>
+                                <p>${roleFront}</p>
                             </div>
                         </div>
-
                         <div class="flip-card-back">
                             <div class="card-back-header">
-                                <h3>${safeName}</h3>
+                                <h3>${name}</h3>
                                 <div class="card-back-meta">
-                                    <p><strong>Alter:</strong> ${safeAge} Jahre</p>
-                                    <p><strong>Aufgaben:</strong> ${safeRoleBack}</p>
+                                    <p><strong>Alter:</strong> ${age} Jahre</p>
+                                    <p><strong>Aufgaben:</strong> ${roleBack}</p>
                                 </div>
                             </div>
-                            <div class="card-back-quote">
-                                "${safeQuote}"
-                            </div>
+                            <div class="card-back-quote">"${quote}"</div>
                             <div class="card-back-action">
-                                <a href="https://instagram.com/${safeInstagram}" target="_blank" rel="noopener noreferrer">@${safeInstagram}</a>
+                                <a href="https://instagram.com/${instagram}" target="_blank" rel="noopener noreferrer">@${instagram}</a>
                             </div>
                         </div>
-
                     </div>
                 </div>
             `;
-        });
+        }).join('');
 
-        teamContainer.innerHTML = htmlContent;
+        teamContainer.innerHTML = teamHtml;
 
-        // Eigener Observer nur für die Karten
         const cardObserver = new IntersectionObserver((entries, observerInstance) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
                     observerInstance.unobserve(entry.target);
@@ -304,182 +308,176 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }, { threshold: 0.15 });
 
-        teamContainer.querySelectorAll('.reveal').forEach(el => {
-            cardObserver.observe(el);
-        });
-
-        if (typeof updateCursorHoverElements === 'function') {
-            updateCursorHoverElements();
-        }
+        teamContainer.querySelectorAll('.reveal').forEach((el) => cardObserver.observe(el));
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // PROJEKTE & FILM-ROLL LOGIC
-    // ─────────────────────────────────────────────────────────────
-
-    // 1. AUTOMATISCHER PROJEKTE-GENERATOR (Aktuelle Projekte)
-    const activeProjects     = window.activeProjects;
-    const hzTrackContainer   = document.getElementById('hz-track');
+    /* =================================================================
+     * 8. AKTUELLE PROJEKTE – Horizontal Scroll (Projekte-Seite)
+     * ================================================================= */
+    const activeProjects   = Array.isArray(window.activeProjects) ? window.activeProjects : null;
+    const hzTrackContainer = document.getElementById('hz-track');
 
     if (hzTrackContainer && activeProjects) {
-        let hzHtml = '';
+        const hzHtml = activeProjects.map((project) => {
+            const title       = escapeHTML(project.title);
+            const description = escapeHTML(project.description);
+            const images      = Array.isArray(project.images) ? project.images : [];
 
-        activeProjects.forEach(project => {
-            const safeTitle = escapeHTML(project.title);
-            const safeDesc  = escapeHTML(project.description);
+            const slides = images.map((src, idx) =>
+                `<img src="${escapeHTML(src)}" class="carousel-slide" alt="${title} Bild ${idx + 1}" loading="lazy">`
+            ).join('');
 
-            let carouselSlides = '';
-            project.images.forEach((img, index) => {
-                carouselSlides += `<img src="${escapeHTML(img)}" class="carousel-slide" alt="${safeTitle} Bild ${index + 1}">`;
-            });
-
-            hzHtml += `
+            return `
                 <div class="hz-item">
                     <div class="project-carousel">
-                        <button class="carousel-btn prev-btn">❮</button>
-                        <button class="carousel-btn next-btn">❯</button>
-                        <div class="carousel-track">
-                            ${carouselSlides}
-                        </div>
+                        <button type="button" class="carousel-btn prev-btn" aria-label="Vorheriges Bild">❮</button>
+                        <button type="button" class="carousel-btn next-btn" aria-label="Nächstes Bild">❯</button>
+                        <div class="carousel-track">${slides}</div>
                     </div>
                     <div class="hz-info">
-                        <h3>${safeTitle}</h3>
-                        <p>${safeDesc}</p>
+                        <h3>${title}</h3>
+                        <p>${description}</p>
                     </div>
                 </div>
             `;
-        });
+        }).join('');
 
         hzTrackContainer.innerHTML = hzHtml;
 
-        // Carousel-Buttons aktivieren
-        document.querySelectorAll('.project-carousel').forEach(carousel => {
+        hzTrackContainer.querySelectorAll('.project-carousel').forEach((carousel) => {
             const track   = carousel.querySelector('.carousel-track');
             const prevBtn = carousel.querySelector('.prev-btn');
             const nextBtn = carousel.querySelector('.next-btn');
+            if (!track || !prevBtn || !nextBtn) return;
 
-            if (track && prevBtn && nextBtn) {
-                nextBtn.addEventListener('click', () => track.scrollBy({ left:  track.clientWidth, behavior: 'smooth' }));
-                prevBtn.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
-            }
+            nextBtn.addEventListener('click', () => track.scrollBy({ left:  track.clientWidth, behavior: 'smooth' }));
+            prevBtn.addEventListener('click', () => track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }));
         });
     }
 
-    // 2. AUTOMATISCHER FILM-ROLL-GENERATOR (Abgeschlossene Projekte)
-    const completedProjects        = window.completedProjects;
-    const filmRollTrackContainer   = document.getElementById('film-roll-track');
+    /* =================================================================
+     * 9. ABGESCHLOSSENE PROJEKTE – Film-Roll (Projekte-Seite)
+     * ================================================================= */
+    const completedProjects      = Array.isArray(window.completedProjects) ? window.completedProjects : null;
+    const filmRollTrackContainer = document.getElementById('film-roll-track');
 
     if (filmRollTrackContainer && completedProjects) {
-        let filmHtml = '';
+        const filmHtml = completedProjects.map((project) => {
+            const title    = escapeHTML(project.title);
+            const subtitle = escapeHTML(project.subtitle);
+            const image    = escapeHTML(project.image);
 
-        completedProjects.forEach(project => {
-            const safeTitle    = escapeHTML(project.title);
-            const safeSubtitle = escapeHTML(project.subtitle);
-            const safeImage    = escapeHTML(project.image);
-
-            filmHtml += `
+            return `
                 <div class="film-card">
-                    <img src="${safeImage}" alt="${safeTitle}">
+                    <img src="${image}" alt="${title}" loading="lazy">
                     <div class="film-info">
-                        <h3>${safeTitle}</h3>
-                        <p>${safeSubtitle}</p>
+                        <h3>${title}</h3>
+                        <p>${subtitle}</p>
                     </div>
                 </div>
             `;
-        });
+        }).join('');
 
         filmRollTrackContainer.innerHTML = filmHtml;
     }
 
-    // 3. HORIZONTAL SCROLL LOGIC (Der Sticky-Effekt)
+    /* =================================================================
+     * 10. FILM-ROLL Horizontal Scroll
+     * ================================================================= */
     const filmWrapper = document.querySelector('.film-roll-wrapper');
     const filmTrack   = document.querySelector('.film-roll-track');
 
     if (filmWrapper && filmTrack) {
-        window.addEventListener('scroll', () => {
+        const onFilmScroll = rafThrottle(() => {
             if (isMobile()) return;
 
-            const wrapperRect  = filmWrapper.getBoundingClientRect();
+            const rect         = filmWrapper.getBoundingClientRect();
             const windowHeight = window.innerHeight;
+            const scrollable   = rect.height - windowHeight;
+            if (scrollable <= 0) return;
+
             const maxTranslate = filmTrack.scrollWidth - window.innerWidth + 100;
 
-            if (wrapperRect.top < 0 && wrapperRect.bottom > windowHeight) {
-                const scrollProgress = Math.abs(wrapperRect.top) / (wrapperRect.height - windowHeight);
-                filmTrack.style.transform = `translateX(-${scrollProgress * maxTranslate}px)`;
-            } else if (wrapperRect.top >= 0) {
-                filmTrack.style.transform = `translateX(0px)`;
-            } else if (wrapperRect.bottom <= windowHeight) {
+            if (rect.top < 0 && rect.bottom > windowHeight) {
+                const progress = Math.abs(rect.top) / scrollable;
+                filmTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
+            } else if (rect.top >= 0) {
+                filmTrack.style.transform = 'translateX(0px)';
+            } else if (rect.bottom <= windowHeight) {
                 filmTrack.style.transform = `translateX(-${maxTranslate}px)`;
             }
         });
 
-        if (typeof updateCursorHoverElements === 'function') {
-            updateCursorHoverElements();
-        }
+        window.addEventListener('scroll', onFilmScroll, { passive: true });
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // MAGNETIC BUTTON LOGIC
-    // ─────────────────────────────────────────────────────────────
-    const isTouchDevice2   = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    const magneticWraps    = document.querySelectorAll('.magnetic-wrap');
+    /* =================================================================
+     * 11. MAGNETISCHE BUTTONS (nur Desktop, kein Touch)
+     * ================================================================= */
+    if (!isTouchDevice) {
+        document.querySelectorAll('.magnetic-wrap').forEach((wrap) => {
+            const btn = wrap.querySelector('.btn-magnetic');
+            if (!btn) return; // FIX: Null-Check ergänzt
 
-    magneticWraps.forEach(wrap => {
-        const btn = wrap.querySelector('.btn-magnetic');
-
-        if (!isTouchDevice2) {
             wrap.addEventListener('mousemove', (e) => {
-                const position = wrap.getBoundingClientRect();
-                const x = e.clientX - position.left - position.width  / 2;
-                const y = e.clientY - position.top  - position.height / 2;
+                const rect = wrap.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width  / 2;
+                const y = e.clientY - rect.top  - rect.height / 2;
                 btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
 
             wrap.addEventListener('mouseleave', () => {
-                btn.style.transform  = `translate(0px, 0px)`;
+                btn.style.transform  = 'translate(0px, 0px)';
                 btn.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
                 setTimeout(() => {
                     btn.style.transition = 'transform 0.1s linear';
                 }, 500);
             });
-        }
-    });
+        });
+    }
 
-    // ─────────────────────────────────────────────────────────────
-    // FORMULAR SUBMIT ANIMATION
-    // ─────────────────────────────────────────────────────────────
+    /* =================================================================
+     * 12. KONTAKTFORMULAR – fetch zum PHP-Endpoint
+     * ================================================================= */
     const contactForm = document.getElementById('interactive-contact-form');
 
     if (contactForm) {
+        // FIX: Pfad muss relativ zum aktuellen Dokument (kontakt.html liegt in
+        //      /src/frontend/pages/) auf /src/backend/php/kontakt/send-mail.php
+        //      verweisen → zwei Ebenen hoch.
+        const ENDPOINT = '../../backend/php/kontakt/send-mail.php';
+        const RESET_AFTER_MS = 5000;
+
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const submitBtn  = contactForm.querySelector('.btn-magnetic');
+            const submitBtn = contactForm.querySelector('.btn-magnetic, button[type="submit"]');
+            if (!submitBtn) return; // FIX: Null-Check ergänzt
+
             const originalText = submitBtn.textContent;
 
-            // Lade-Status
-            submitBtn.textContent  = 'Wird gesendet...';
+            submitBtn.textContent   = 'Wird gesendet…';
             submitBtn.style.opacity = '0.8';
-            submitBtn.disabled     = true;
-
-            const formData = new FormData(contactForm);
+            submitBtn.disabled      = true;
 
             try {
-                const response = await fetch('backend/php/kontakt/send-mail.php', {
+                const response = await fetch(ENDPOINT, {
                     method: 'POST',
-                    body: formData
+                    body: new FormData(contactForm),
                 });
 
-                if (response.ok) {
-                    submitBtn.classList.add('success');
-                    submitBtn.textContent = 'Nachricht gesendet! ✓';
-                    contactForm.reset();
-                } else {
-                    throw new Error('Fehler beim Senden');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
+
+                submitBtn.classList.add('success');
+                submitBtn.textContent = 'Nachricht gesendet ✓';
+                contactForm.reset();
             } catch (error) {
+                submitBtn.classList.remove('success');
                 submitBtn.textContent = 'Fehler aufgetreten ✗';
-                console.error(error);
+                // eslint-disable-next-line no-console
+                console.error('[Kontaktformular]', error);
             } finally {
                 submitBtn.style.opacity = '1';
 
@@ -487,9 +485,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     submitBtn.classList.remove('success');
                     submitBtn.textContent = originalText;
                     submitBtn.disabled    = false;
-                }, 5000);
+                }, RESET_AFTER_MS);
             }
         });
     }
-
-}); // End DOMContentLoaded
+});

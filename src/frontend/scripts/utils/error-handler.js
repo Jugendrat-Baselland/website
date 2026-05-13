@@ -1,182 +1,106 @@
 /**
  * error-handler.js
- * Globaler Fehler-Handler für die Jugendrat Baselland Website.
+ * Globaler Fehler-Handler für die Jugendrat-Baselland-Website.
  *
- * Funktionen:
- *  1. Abfangen von internen Link-Klicks → HEAD-Request → bei Fehler zu 404 weiterleiten
- *  2. Abfangen von fehlgeschlagenen fetch()-Aufrufen (via globalem Wrapper)
- *  3. Abfangen von kritischen JavaScript-Fehlern (window.onerror)
- *  4. Abfangen von nicht behandelten Promise-Rejections
+ * Aufgaben (bewusst minimalistisch gehalten):
+ *   1. Loggen von JavaScript-Fehlern und unbehandelten Promise-Rejections.
+ *   2. Loggen von fehlgeschlagenen fetch()-Aufrufen.
+ *   3. Optional: Weiterleitung zur 404-Seite bei kritischen JS-Fehlern.
  *
- * Einbinden (vor </body> oder im <head> mit defer):
- *   <script src="../scripts/utils/error-handler.js"></script>
+ * WICHTIG:
+ *  • Es findet KEIN präemptives Abfangen von Link-Klicks mehr statt.
+ *    Die ursprüngliche HEAD-Prüfung verursachte spürbare Latenz auf
+ *    jedem Klick und brach komplett beim Aufruf via file://-Protokoll.
+ *    Für saubere 404-Routen sollte die Server-Konfiguration genutzt
+ *    werden (z. B. Apache `ErrorDocument 404 /src/frontend/pages/404.html`).
  */
 
 (function () {
-  'use strict';
+    'use strict';
 
-  /* ─── Konfiguration ────────────────────────────────────────────────────── */
+    /* ─── Konfiguration ────────────────────────────────────────────── */
 
-  const CONFIG = {
-    // Pfad zur 404-Seite relativ zum Site-Root (ohne führenden Slash)
-    errorPage: 'pages/404.html',
+    const CONFIG = {
+        // Pfad zur 404-Seite relativ zum Site-Root (führender Slash erforderlich).
+        errorPagePath: '/src/frontend/pages/404.html',
 
-    // Nur bei diesen HTTP-Status-Codes zur Fehlerseite weiterleiten
-    redirectOnStatus: [404, 403, 410, 500, 502, 503],
+        // Fehlerseite bei JS-Fehlern aufrufen? (false = nur loggen)
+        redirectOnJSError: false,
 
-    // Fehlerseite auch bei JS-Fehlern aufrufen?
-    // false = nur loggen, true = weiterleiten
-    redirectOnJSError: false,
+        // Konsolen-Logging aktivieren?
+        debug: false
+    };
 
-    // Debug-Ausgaben in der Konsole aktivieren?
-    debug: false,
-  };
+    /* ─── Hilfsfunktionen ──────────────────────────────────────────── */
 
-  /* ─── Hilfsfunktionen ──────────────────────────────────────────────────── */
+    const log = (...args) => {
+        if (CONFIG.debug) console.warn('[ErrorHandler]', ...args);
+    };
 
-  /**
-   * Berechnet den relativen Pfad zur 404-Seite ausgehend vom aktuellen Pfad.
-   * Funktioniert unabhängig von der Ordnertiefe der aktuellen Seite.
-   */
-  function getErrorPageUrl() {
-    const pathname = window.location.pathname;
+    /**
+     * Berechnet die URL der 404-Seite robust:
+     *   • Bei http(s)-Auslieferung wird der absolute Pfad genutzt.
+     *   • Bei file:// wird die Berechnung übersprungen (keine Umleitung),
+     *     weil ein Redirect dort sinnlos und schadhaft wäre.
+     */
+    const buildErrorUrl = () => {
+        if (!/^https?:$/.test(window.location.protocol)) return null;
+        return CONFIG.errorPagePath;
+    };
 
-    // Anzahl der Verzeichnisebenen unterhalb des Root ermitteln
-    // Beispiel: /pages/subdir/page.html → 2 Ebenen → ../../pages/404.html
-    const segments = pathname.split('/').filter(Boolean); // entfernt leere Strings
-    const depth = segments.length > 0 ? segments.length - 1 : 0; // -1 für die Datei selbst
+    const redirectToError = () => {
+        // Endlosschleife verhindern: Sind wir bereits auf der 404-Seite?
+        if (window.location.pathname.endsWith('/404.html')) return;
 
-    const prefix = '../'.repeat(depth) || './';
-    return prefix + CONFIG.errorPage;
-  }
+        const url = buildErrorUrl();
+        if (!url) return;
 
-  /** Weiterleitung zur Fehlerseite – verhindert Endlos-Schleifen */
-  function redirectToError() {
-    const currentPath = window.location.pathname;
-    // Kein Redirect, wenn wir bereits auf der Fehlerseite sind
-    if (currentPath.includes('404')) return;
+        log('Weiterleitung zur Fehlerseite:', url);
+        window.location.href = url;
+    };
 
-    const errorUrl = getErrorPageUrl();
-    log('Weiterleitung zur Fehlerseite:', errorUrl);
-    window.location.href = errorUrl;
-  }
+    /* ─── 1. Globaler fetch()-Wrapper ──────────────────────────────── */
+    // Loggt fehlgeschlagene Requests, leitet aber NICHT um – Aufrufer
+    // sollen selbst entscheiden, wie sie auf Fehler reagieren.
 
-  function log(...args) {
-    if (CONFIG.debug) console.warn('[ErrorHandler]', ...args);
-  }
+    const originalFetch = window.fetch.bind(window);
+    window.fetch = function patchedFetch(...args) {
+        return originalFetch(...args)
+            .then((response) => {
+                if (!response.ok) log('fetch() Fehlerstatus', response.status, response.url);
+                return response;
+            })
+            .catch((err) => {
+                log('fetch() Netzwerkfehler:', err);
+                throw err; // Fehler nicht verschlucken
+            });
+    };
 
-  /* ─── 1. Interne Link-Klicks abfangen ─────────────────────────────────── */
+    /* ─── 2. JavaScript-Fehler abfangen ────────────────────────────── */
 
-  document.addEventListener('click', function (e) {
-    const link = e.target.closest('a');
-    if (!link) return;
-
-    const href = link.getAttribute('href');
-    if (!href) return;
-
-    // Externe Links, Anker, mailto, tel und _blank-Links überspringen
-    if (
-      href.startsWith('http://') ||
-      href.startsWith('https://') ||
-      href.startsWith('#') ||
-      href.startsWith('mailto:') ||
-      href.startsWith('tel:') ||
-      href.startsWith('javascript:') ||
-      link.target === '_blank'
-    ) {
-      return;
-    }
-
-    // Absoluten URL aus dem relativen Pfad berechnen
-    let absoluteUrl;
-    try {
-      absoluteUrl = new URL(href, window.location.href);
-    } catch {
-      log('Ungültiger URL:', href);
-      return;
-    }
-
-    // Nur Same-Origin-Links prüfen
-    if (absoluteUrl.origin !== window.location.origin) return;
-
-    // Standard-Navigation verhindern und erst prüfen
-    e.preventDefault();
-
-    log('Prüfe Link:', absoluteUrl.href);
-
-    fetch(absoluteUrl.href, {
-      method: 'HEAD',
-      cache: 'no-cache',
-    })
-      .then(function (response) {
-        if (response.ok) {
-          // Seite existiert → normal navigieren
-          window.location.href = absoluteUrl.href;
-        } else if (CONFIG.redirectOnStatus.includes(response.status)) {
-          log('HTTP', response.status, '→ Fehlerseite');
-          redirectToError();
-        } else {
-          // Unbekannter Status → trotzdem normal navigieren
-          window.location.href = absoluteUrl.href;
+    window.addEventListener('error', (e) => {
+        // Ressourcen-Ladefehler (Bilder, CSS, Scripts) sollen die UX
+        // nicht stören; nur loggen.
+        if (e.target && e.target !== window) {
+            const tag = e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown';
+            const src = e.target.src || e.target.href || '(unbekannt)';
+            log('Ressource konnte nicht geladen werden:', tag, src);
+            return;
         }
-      })
-      .catch(function (err) {
-        // Netzwerkfehler (offline, DNS-Fehler, etc.)
-        log('Netzwerkfehler:', err);
-        redirectToError();
-      });
-  });
 
-  /* ─── 2. Globaler fetch()-Wrapper ─────────────────────────────────────── */
-  // Überschreibt window.fetch, um fehlgeschlagene API-Aufrufe zentral zu loggen.
-  // Eine Weiterleitung erfolgt hier NICHT automatisch, da fetch() oft für
-  // Hintergrund-Anfragen genutzt wird – stattdessen wird der Fehler geworfen,
-  // damit der aufrufende Code selbst entscheiden kann.
+        log('JavaScript-Fehler:', e.message, 'in', e.filename, 'Zeile', e.lineno);
+        if (CONFIG.redirectOnJSError) redirectToError();
+    }, /* capture */ true);
 
-  const _originalFetch = window.fetch;
-  window.fetch = function (...args) {
-    return _originalFetch.apply(this, args).then(function (response) {
-      if (!response.ok) {
-        log('fetch() Fehler:', response.status, response.url);
-        // Fehler wird weitergegeben; aufrufender Code kann reagieren
-      }
-      return response;
-    }).catch(function (err) {
-      log('fetch() Netzwerkfehler:', err);
-      throw err; // Fehler nicht schlucken
+    /* ─── 3. Nicht behandelte Promise-Rejections ──────────────────── */
+
+    window.addEventListener('unhandledrejection', (e) => {
+        log('Unbehandelte Promise-Rejection:', e.reason);
+        if (CONFIG.redirectOnJSError) {
+            e.preventDefault();
+            redirectToError();
+        }
     });
-  };
 
-  /* ─── 3. JavaScript-Fehler abfangen ───────────────────────────────────── */
-
-  window.addEventListener('error', function (e) {
-    // Ressourcen-Ladefehler (Bilder, CSS, Scripts) abfangen
-    if (e.target && e.target !== window) {
-      const tag = e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown';
-      const src = e.target.src || e.target.href || '(unbekannt)';
-      log('Ressource konnte nicht geladen werden:', tag, src);
-      // Keine Weiterleitung bei fehlenden Ressourcen, um die UX nicht zu stören
-      return;
-    }
-
-    // Echte JS-Fehler
-    log('JavaScript-Fehler:', e.message, 'in', e.filename, 'Zeile', e.lineno);
-
-    if (CONFIG.redirectOnJSError) {
-      redirectToError();
-    }
-  }, true /* capture: true, um auch Ressourcen-Fehler zu erwischen */);
-
-  /* ─── 4. Nicht behandelte Promise-Rejections ───────────────────────────── */
-
-  window.addEventListener('unhandledrejection', function (e) {
-    log('Unbehandelte Promise-Rejection:', e.reason);
-
-    if (CONFIG.redirectOnJSError) {
-      e.preventDefault(); // Browser-Konsolenfehler unterdrücken
-      redirectToError();
-    }
-  });
-
-  log('Error-Handler aktiv.');
+    log('Error-Handler aktiv.');
 })();
